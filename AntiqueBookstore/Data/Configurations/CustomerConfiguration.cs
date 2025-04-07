@@ -43,6 +43,11 @@ namespace AntiqueBookstore.Data.Configurations
                    .OnDelete(DeleteBehavior.Cascade); // При удалении клиента удаляем его адреса
 
             // Relation to Order (1-to-Many) configured in OrderConfiguration
+
+            // Seed data
+            builder.HasData(
+                new Customer { Id = 1, FirstName = "Hans", LastName = "Müller", Email = "hans.muller@example.de", IsActive = true }
+                );
         }
     }
 }

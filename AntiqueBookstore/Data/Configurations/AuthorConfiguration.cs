@@ -26,6 +26,11 @@ namespace AntiqueBookstore.Data.Configurations
 
 
             // TODO: Constraints on 'BirthYear' and 'DeathYear' can be added at the application/validation level
+
+            // Seed data
+            builder.HasData(
+                new Author { Id = 1, FirstName = "Arthur", LastName = "Conan Doyle", BirthYear = 1859, DeathYear = 1930, Bio = "British writer" }
+                );
         }
     }
 }

@@ -52,6 +52,28 @@ namespace AntiqueBookstore.Data.Configurations
                    .WithOne(ph => ph.Employee) // Navigation property in Employee
                    .HasForeignKey(ph => ph.EmployeeId)
                    .OnDelete(DeleteBehavior.Cascade); // When deleting Employee, we delete his job history
+
+            // Seed data
+            builder.HasData(
+                new Employee
+                {
+                    Id = 1,
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    HireDate = new DateTime(2023, 1, 15),
+                    IsActive = true,
+                    ApplicationUserId = null 
+                },
+                new Employee
+                {
+                    Id = 2,
+                    FirstName = "Bob",
+                    LastName = "Williams",
+                    HireDate = new DateTime(2023, 3, 10),
+                    IsActive = true,
+                    ApplicationUserId = null 
+                }
+            );
         }
     }
 }

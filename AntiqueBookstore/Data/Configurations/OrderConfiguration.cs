@@ -56,6 +56,22 @@ namespace AntiqueBookstore.Data.Configurations
                    .WithOne(s => s.Order)
                    .HasForeignKey(s => s.OrderId)
                    .OnDelete(DeleteBehavior.Cascade); // Delete Sales items when deleting an Order
+
+
+            // Seed data
+            builder.HasData(
+                new Order
+                    {
+                        Id = 1,
+                        OrderDate = DateTime.UtcNow.AddDays(-1),
+                        DeliveryDate = null,
+                        PaymentDate = null,
+                        CustomerId = 1,
+                        EmployeeId = 2,
+                        OrderStatusId = 1,
+                        PaymentMethodId = 2
+                    }
+                );
         }
     }
 }

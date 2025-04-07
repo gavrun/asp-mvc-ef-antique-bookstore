@@ -1,4 +1,5 @@
 ﻿using AntiqueBookstore.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Data.Seed
@@ -16,8 +17,7 @@ namespace AntiqueBookstore.Data.Seed
             {
                 var services = scope.ServiceProvider;
 
-                //var logger = services.GetRequiredService<ILogger<DataSeeder>>(); // BUG: Logger for DataSeeder
-                var logger = services.GetRequiredService<ILogger<Program>>();
+                var logger = services.GetRequiredService<ILogger<Program>>(); // Logger for DataSeeder
 
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
@@ -30,10 +30,7 @@ namespace AntiqueBookstore.Data.Seed
                     logger.LogInformation("Starting data seeding...");
 
                     // Load data by seeding methods
-                    await SeedEmployeesAsync(context, logger);
-                    await SeedBookCatalogAsync(context, logger);
-                    await SeedCustomersAsync(context, logger);
-                    await SeedOrdersAsync(context, logger);
+                    await SeedAppUserAsync(context, logger, services); // TODO: finish
 
 
                     // Save changes from all seeding methods
@@ -55,35 +52,120 @@ namespace AntiqueBookstore.Data.Seed
             }
         }
 
-        // Seed employees data
-        private static async Task SeedEmployeesAsync(ApplicationDbContext context, ILogger logger)
+        // Creating ApplicationUser
+        private static async Task SeedAppUserAsync(ApplicationDbContext context, ILogger logger, IServiceProvider services)
         {
-            // TODO: Seed test employees data
-            await Task.CompletedTask;
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            if (!await context.Employees.AnyAsync() && !await userManager.Users.AnyAsync(u => u.Email.EndsWith("@example.com")))
+            {
+                logger.LogInformation("Seeding ApplicationUsers and Employees...");
+
+                ApplicationUser managerUser = null;
+                ApplicationUser salesUser = null;
+
+                var managerEmail = "manager@example.com";
+                var salesEmail = "salesman@example.com";
+
+                // Default Manager user
+                if (await userManager.FindByEmailAsync(managerEmail) == null)
+                {
+                    logger.LogInformation($"User {managerEmail} not found, creating...");
+                    managerUser = new ApplicationUser { UserName = managerEmail, Email = managerEmail, EmailConfirmed = true };
+                    var result = await userManager.CreateAsync(managerUser, "manager"); // it is TEST password
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(managerUser, "Manager"); 
+                        logger.LogInformation($"Created user {managerEmail} with Manager role.");
+                    }
+                    else 
+                    { 
+                        logger.LogError($"Failed to create user {managerEmail}: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                        managerUser = null;
+                    }
+
+                }
+                else
+                {
+                    logger.LogInformation($"User {managerEmail} already exists.");
+                }
+
+                // TODO: Create link to Employees
+                if (managerUser != null)
+                {
+                    var managerEmployee = await context.Employees.FindAsync(1); // Search by PK
+                    if (managerEmployee != null)
+                    {
+                        if (string.IsNullOrEmpty(managerEmployee.ApplicationUserId))
+                        {
+                            managerEmployee.ApplicationUserId = managerUser.Id;
+                            logger.LogInformation($"Linking Employee ID {managerEmployee.Id} ({managerEmployee.LastName}) to User {managerUser.Email}.");
+                        }
+                        else if (managerEmployee.ApplicationUserId == managerUser.Id)
+                        {
+                            logger.LogInformation($"Employee ID {managerEmployee.Id} already linked to User {managerUser.Email}.");
+                        }
+                        else
+                        {
+                            logger.LogWarning($"Employee ID {managerEmployee.Id} is already linked to a different user ({managerEmployee.ApplicationUserId}). Cannot link to {managerUser.Email}.");
+                        }
+                    }
+                    else
+                    {
+                        logger.LogWarning($"Employee with ID 1 (expected Manager) not found in the database. Cannot link user {managerUser.Email}.");
+                    }
+                }
+
+                // Default Salesman user
+                if (await userManager.FindByEmailAsync(salesEmail) == null)
+                {
+                    logger.LogInformation($"User {salesEmail} not found, creating...");
+                    salesUser = new ApplicationUser { UserName = salesEmail, Email = salesEmail, EmailConfirmed = true };
+                    var result = await userManager.CreateAsync(salesUser, "salesman"); // it is TEST password
+                    if (result.Succeeded) 
+                    { 
+                        await userManager.AddToRoleAsync(salesUser, "Sales"); 
+                        logger.LogInformation($"Created user {salesEmail} with Sales role."); 
+                    }
+                    else 
+                    { 
+                        logger.LogError($"Failed to create user {salesEmail}: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                        salesUser = null;
+                    }
+                }
+                else
+                {
+                    logger.LogInformation($"User {managerEmail} already exists.");
+                }
+
+                // TODO: Create link to Employees
+                if (salesUser != null)
+                {
+                    var salesEmployee = await context.Employees.FindAsync(2); // Search by PK
+                    if (salesEmployee != null)
+                    {
+                        if (string.IsNullOrEmpty(salesEmployee.ApplicationUserId))
+                        {
+                            salesEmployee.ApplicationUserId = salesUser.Id;
+                            logger.LogInformation($"Linking Employee ID {salesEmployee.Id} ({salesEmployee.LastName}) to User {salesUser.Email}.");
+                        }
+                        else if (salesEmployee.ApplicationUserId == salesUser.Id)
+                        {
+                            logger.LogInformation($"Employee ID {salesEmployee.Id} already linked to User {salesUser.Email}.");
+                        }
+                        else
+                        {
+                            logger.LogWarning($"Employee ID {salesEmployee.Id} is already linked to a different user ({salesEmployee.ApplicationUserId}). Cannot link to {salesUser.Email}.");
+                        }
+                    }
+                    else
+                    {
+                        logger.LogWarning($"Employee with ID 2 (expected Sales) not found in the database. Cannot link user {salesUser.Email}.");
+                    }
+                }
+            }  
         }
 
-        // Seed book catalog data
-        private static async Task SeedBookCatalogAsync(ApplicationDbContext context, ILogger logger)
-        {
-            // TODO: Seed test book catalog data
-            await Task.CompletedTask;
-        }
-
-        // Seed customers data
-        private static async Task SeedCustomersAsync(ApplicationDbContext context, ILogger logger)
-        {
-            // TODO: Seed test customers data
-            await Task.CompletedTask;
-        }
-
-        // Seed orders data
-        private static async Task SeedOrdersAsync(ApplicationDbContext context, ILogger logger)
-        {
-            // TODO: Seed test orders data
-            await Task.CompletedTask;
-        }
-
-        // SaveChanges will happen in SeedDatabaseAsync
-        // End of seeding
+        // End of data seeding
     }
 }

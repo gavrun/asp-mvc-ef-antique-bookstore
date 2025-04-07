@@ -2,7 +2,7 @@
 {
     public class SalesAuditLog
     {
-        // BUG: Review approach: string (per-column) vs. Collection/JSON (snapshot)
+        // NOTE: Review approach: string (per-column) vs. Collection/JSON (snapshot)
 
         // Column based logging 
         public long EventId { get; set; } // NOTE: Named PK

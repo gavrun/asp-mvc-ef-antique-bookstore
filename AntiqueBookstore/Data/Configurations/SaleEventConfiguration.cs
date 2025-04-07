@@ -26,6 +26,11 @@ namespace AntiqueBookstore.Data.Configurations
 
 
             // Relation to Sale (1-to-Many) configured in SaleConfiguration (WithOne)
+
+            // Seed data
+            builder.HasData(
+                new SaleEvent { Id = 1, Name = "Spring Sale", Discount = 0.15m, StartDate = new DateTime(2023, 3, 1), EndDate = new DateTime(2023, 5, 31) }
+                );
         }
     }
 }

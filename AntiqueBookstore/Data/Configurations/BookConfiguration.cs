@@ -52,6 +52,21 @@ namespace AntiqueBookstore.Data.Configurations
                    .WithMany(bs => bs.Books)
                    .HasForeignKey(b => b.StatusId)
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete Status if there are Books
+
+            // Seed data
+            builder.HasData(
+                new Book
+                {
+                    Id = 1,
+                    Title = "A Study in Scarlet",
+                    Publisher = "Ward Lock & Co",
+                    PublicationDate = 1887,
+                    PurchasePrice = 150.00m,
+                    RecommendedPrice = 750.00m,
+                    ConditionId = 3, 
+                    StatusId = 2
+                }
+            );
         }
     }
 }

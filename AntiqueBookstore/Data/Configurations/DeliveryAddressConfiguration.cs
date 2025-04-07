@@ -41,6 +41,20 @@ namespace AntiqueBookstore.Data.Configurations
             // Relation to Customer configured in CustomerConfiguration (WithOne)
 
             // Relation to Order (1-to-Many) configured in OrderConfiguration
+
+            // Seed data
+            builder.HasData(
+                new DeliveryAddress 
+                {
+                    Id = 1,
+                    AddressAlias = "Home",
+                    Country = "Germany",
+                    City = "Berlin",
+                    AddressLine1 = "Unter den Linden 77",
+                    PostalCode = "10117",
+                    CustomerId = 1,
+                }
+            );
         }
     }
 }

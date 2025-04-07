@@ -29,6 +29,28 @@ namespace AntiqueBookstore.Data.Configurations
                    .WithMany(p => p.PositionHistories) // Using the navigation property in Position
                    .HasForeignKey(ph => ph.PositionId)
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete Position if exists in history
+
+            // Seed data 
+            builder.HasData(
+                new PositionHistory
+                {
+                    PromotionId = 1,
+                    StartDate = new DateTime(2023, 1, 15),
+                    EndDate = null,
+                    IsActive = true,
+                    EmployeeId = 1,
+                    PositionId = 1
+                },
+                new PositionHistory
+                {
+                    PromotionId = 2,
+                    StartDate = new DateTime(2023, 3, 10),
+                    EndDate = null,
+                    IsActive = true,
+                    EmployeeId = 2,
+                    PositionId = 2
+                }
+                );
         }
     }
 }

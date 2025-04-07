@@ -6,7 +6,7 @@ namespace AntiqueBookstore.Data.Configurations
 {
     public class SalesAuditLogConfiguration : IEntityTypeConfiguration<SalesAuditLog>
     {
-        // BUG: Review string vs. Collection/JSON 
+        // NOTE: Review string vs. Collection/JSON 
         public void Configure(EntityTypeBuilder<SalesAuditLog> builder)
         {
             builder.HasKey(log => log.EventId); // NOTE: Named PK

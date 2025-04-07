@@ -28,6 +28,11 @@ namespace AntiqueBookstore.Data.Configurations
                    .HasForeignKey(s => s.EventId)
                    .IsRequired(false) // Not required to attach a SaleEvent
                    .OnDelete(DeleteBehavior.SetNull); // Reset the FK on Sale if the stock item is removed
+
+            // Seed data
+            builder.HasData(
+                new Sale { Id = 1, SalePrice = 750.00m, OrderId = 1, BookId = 1 }
+                );
         }
     }
 }

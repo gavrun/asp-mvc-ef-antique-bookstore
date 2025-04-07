@@ -1,4 +1,5 @@
 ﻿using AntiqueBookstore.Domain.Entities;
+using AntiqueBookstore.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,6 +26,12 @@ namespace AntiqueBookstore.Data.Configurations
                    .WithMany(r => r.Positions)
                    .HasForeignKey(p => p.RoleId)
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete Role if there are Positions
+
+            // Seed Positions "Store Manager", "Sales Associate"
+            builder.HasData(
+                new Position { Id = 1, Title = "Store Manager", WorkSchedule = WorkSchedule.FullTime, RoleId = 2 },
+                new Position { Id = 2, Title = "Sales Associate", WorkSchedule = WorkSchedule.FullTime, RoleId = 3 }
+                );
         }
     }
 }
