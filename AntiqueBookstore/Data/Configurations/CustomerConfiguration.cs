@@ -29,8 +29,8 @@ namespace AntiqueBookstore.Data.Configurations
                 .IsRequired(false);
 
             builder.Property(c => c.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             builder.Property(c => c.Comment)
                 .HasMaxLength(500)
@@ -46,7 +46,11 @@ namespace AntiqueBookstore.Data.Configurations
 
             // Seed data
             builder.HasData(
-                new Customer { Id = 1, FirstName = "Hans", LastName = "Müller", Email = "hans.muller@example.de", IsActive = true }
+                new Customer { Id = 1, FirstName = "Hans", LastName = "Müller", Email = "hans.muller@example.de", IsActive = true },
+                new Customer { Id = 2, FirstName = "Sophie", LastName = "Dubois", Email = "sophie.dubois@example.fr", IsActive = true },
+                new Customer { Id = 3, FirstName = "Haruki", LastName = "Tanaka", Email = "haruki.tanaka@example.jp", IsActive = true },
+                new Customer { Id = 4, FirstName = "Thabo", LastName = "Ndlovu", Email = "thabo.ndlovu@example.za", IsActive = true },
+                new Customer { Id = 5, FirstName = "Isabella", LastName = "Fernandez", Email = "isabella.fernandez@example.ar", IsActive = true }
                 );
         }
     }

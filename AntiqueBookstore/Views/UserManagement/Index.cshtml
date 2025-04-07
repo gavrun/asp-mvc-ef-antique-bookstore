@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model IEnumerable<AntiqueBookstore.Domain.Entities.ApplicationUser>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "User Management";
+
+    var availableEmployeesSelectList = ViewData["AvailableEmployees"] as SelectList;
+}
+
+@* Messages TempData *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Link User account to Employee record.</p>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Email)
+            </th>
+            <th>
+                Linked Employee
+            </th>
+            <th>
+                Action
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @if (user.Employee != null)
+                    {
+                        
+                        @Html.DisplayFor(modelItem => user.Employee.FirstName)
+                        @Html.DisplayFor(modelItem => user.Employee.LastName)
+                        <small>(ID: @user.Employee.Id)</small>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not linked</span>
+                    }
+                </td>
+                <td>
+                    @if (user.Employee == null)
+                    {
+                        if (availableEmployeesSelectList != null && availableEmployeesSelectList.Any())
+                        {
+                            // Form fot POST to LinkEmployee
+                            <form asp-action="LinkEmployee" asp-controller="UserManagement" method="post" class="form-inline">
+                                
+                                @* Hiddin feild, ID *@
+                                <input type="hidden" name="userId" value="@user.Id" />
+
+                                @* Dropdown list *@
+                                <select name="selectedEmployeeId" class="form-control form-control-sm mr-2" asp-items="availableEmployeesSelectList">
+                                    @* Empty option *@
+                                    <option value="">-- Select Employee --</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-primary btn-sm">Link</button>
+                            </form>
+                        }
+                        else if (user.Employee == null) 
+                        {
+                            <span class="text-info">No available employees to link.</span>
+                        }
+                    }
+                    else
+                    {
+                        // Do nothing
+                        <span>-</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

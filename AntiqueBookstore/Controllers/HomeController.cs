@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AntiqueBookstore.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,7 +20,6 @@ namespace AntiqueBookstore.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Manager")]
         public IActionResult Privacy()
         {
             return View();

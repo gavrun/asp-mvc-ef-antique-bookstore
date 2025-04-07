@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AntiqueBookstore.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialSchemaCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -109,7 +109,7 @@ namespace AntiqueBookstore.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
@@ -125,7 +125,7 @@ namespace AntiqueBookstore.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,7 +139,7 @@ namespace AntiqueBookstore.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,7 +153,7 @@ namespace AntiqueBookstore.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -311,7 +311,7 @@ namespace AntiqueBookstore.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: true)
                 },
@@ -486,7 +486,7 @@ namespace AntiqueBookstore.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     PositionId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -544,7 +544,20 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Authors",
                 columns: new[] { "Id", "Bio", "BirthYear", "DeathYear", "FirstName", "LastName" },
-                values: new object[] { 1, "British writer", 1859, 1930, "Arthur", "Conan Doyle" });
+                values: new object[,]
+                {
+                    { 1, "British writer", 1859, 1930, "Arthur", "Conan Doyle" },
+                    { 2, "Japanese novelist and poet of the Heian period", 978, 1016, "Murasaki", "Shikibu" },
+                    { 3, "Chinese writer, considered the founder of modern Chinese literature", 1881, 1936, "Lu", "Xun" },
+                    { 4, "Egyptian writer who won the Nobel Prize for Literature", 1911, 2006, "Naguib", "Mahfouz" },
+                    { 5, "Nigerian novelist, poet and critic", 1930, 2013, "Chinua", "Achebe" },
+                    { 6, "Argentine short-story writer, essayist and poet", 1899, 1986, "Jorge Luis", "Borges" },
+                    { 7, "Russian writer, physician and playwright", 1891, 1940, "Mikhail", "Bulgakov" },
+                    { 8, "Irish novelist, short story writer and poet", 1882, 1941, "James", "Joyce" },
+                    { 9, "Colombian novelist and Nobel Prize winner", 1927, 2014, "Gabriel", "García Márquez" },
+                    { 10, "Italian novelist, literary critic and philosopher", 1932, 2016, "Umberto", "Eco" },
+                    { 11, "Bengali polymath and Nobel Prize winner", 1861, 1941, "Rabindranath", "Tagore" }
+                });
 
             migrationBuilder.InsertData(
                 table: "BookConditions",
@@ -572,7 +585,14 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "Id", "Comment", "Email", "FirstName", "IsActive", "LastName", "Phone" },
-                values: new object[] { 1, null, "hans.muller@example.de", "Hans", true, "Müller", null });
+                values: new object[,]
+                {
+                    { 1, null, "hans.muller@example.de", "Hans", true, "Müller", null },
+                    { 2, null, "sophie.dubois@example.fr", "Sophie", true, "Dubois", null },
+                    { 3, null, "haruki.tanaka@example.jp", "Haruki", true, "Tanaka", null },
+                    { 4, null, "thabo.ndlovu@example.za", "Thabo", true, "Ndlovu", null },
+                    { 5, null, "isabella.fernandez@example.ar", "Isabella", true, "Fernandez", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Employees",
@@ -612,16 +632,9 @@ namespace AntiqueBookstore.Migrations
                 values: new object[,]
                 {
                     { 1, true, "Credit Card" },
-                    { 2, true, "Cash" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "PaymentMethods",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 3, "PayPal" },
-                    { 4, "Bank Transfer" }
+                    { 2, true, "Cash" },
+                    { 3, false, "PayPal" },
+                    { 4, false, "Bank Transfer" }
                 });
 
             migrationBuilder.InsertData(
@@ -632,17 +645,37 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Books",
                 columns: new[] { "Id", "ConditionId", "PublicationDate", "Publisher", "PurchasePrice", "RecommendedPrice", "StatusId", "Title" },
-                values: new object[] { 1, 3, 1887, "Ward Lock & Co", 150.00m, 750.00m, 2, "A Study in Scarlet" });
+                values: new object[,]
+                {
+                    { 1, 3, 1887, "Ward Lock & Co", 150.00m, 750.00m, 2, "A Study in Scarlet" },
+                    { 2, 2, 1021, "Imperial Court of Japan", 3500.00m, 12000.00m, 1, "The Tale of Genji" },
+                    { 3, 1, 1918, "New Youth Magazine", 800.00m, 2500.00m, 1, "A Madman's Diary" },
+                    { 4, 2, 1956, "American University in Cairo Press", 450.00m, 1800.00m, 1, "The Cairo Trilogy: Palace Walk" },
+                    { 5, 3, 1958, "William Heinemann Ltd.", 1200.00m, 4500.00m, 1, "Things Fall Apart" },
+                    { 6, 1, 1944, "Editorial Sur", 900.00m, 3200.00m, 1, "Ficciones" },
+                    { 7, 2, 1967, "YMCA Press", 1500.00m, 5800.00m, 1, "The Master and Margarita" },
+                    { 8, 2, 1922, "Shakespeare and Company", 4800.00m, 18000.00m, 1, "Ulysses" },
+                    { 9, 1, 1967, "Editorial Sudamericana", 1200.00m, 4500.00m, 1, "One Hundred Years of Solitude" },
+                    { 10, 1, 1980, "Bompiani", 600.00m, 2200.00m, 1, "The Name of the Rose" },
+                    { 11, 3, 1912, "India Society of London", 2200.00m, 7500.00m, 1, "Gitanjali" }
+                });
 
             migrationBuilder.InsertData(
                 table: "DeliveryAddresses",
                 columns: new[] { "Id", "AddressAlias", "AddressLine1", "AddressLine2", "City", "Country", "CustomerId", "Details", "PostalCode" },
-                values: new object[] { 1, "Home", "Unter den Linden 77", null, "Berlin", "Germany", 1, null, "10117" });
+                values: new object[,]
+                {
+                    { 1, "Home", "Unter den Linden 77", null, "Berlin", "Germany", 1, null, "10117" },
+                    { 2, "Home", "15 Avenue des Champs-Élysées", null, "Paris", "France", 2, null, "75008" },
+                    { 3, "Home", "4-2-8 Shinjuku, Shinjuku-ku", null, "Tokyo", "Japan", 3, null, "160-0022" },
+                    { 4, "Home", "123 Nelson Mandela Boulevard", null, "Cape Town", "South Africa", 4, null, "8001" },
+                    { 5, "Home", "789 Avenida 9 de Julio", null, "Buenos Aires", "Argentina", 5, null, "C1043" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 6, 11, 45, 34, 445, DateTimeKind.Utc).AddTicks(1058), 1, null, 2 });
+                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 6, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1294), 1, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "Positions",
@@ -656,7 +689,25 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "BookAuthors",
                 columns: new[] { "AuthorId", "BookId" },
-                values: new object[] { 1, 1 });
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 2 },
+                    { 3, 3 },
+                    { 4, 4 },
+                    { 5, 5 },
+                    { 6, 6 },
+                    { 7, 7 },
+                    { 8, 8 },
+                    { 9, 9 },
+                    { 10, 10 },
+                    { 11, 11 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
+                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 4, 4, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1304), 6, null, 1 });
 
             migrationBuilder.InsertData(
                 table: "PositionHistories",
@@ -670,7 +721,12 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Sales",
                 columns: new[] { "Id", "BookId", "EventId", "OrderId", "SalePrice" },
-                values: new object[] { 1, 1, null, 1, 750.00m });
+                values: new object[,]
+                {
+                    { 1, 1, null, 1, 750.00m },
+                    { 2, 2, null, 2, 1200.00m },
+                    { 3, 8, null, 2, 950.00m }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

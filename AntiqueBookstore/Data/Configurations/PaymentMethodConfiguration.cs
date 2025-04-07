@@ -17,8 +17,8 @@ namespace AntiqueBookstore.Data.Configurations
             builder.HasIndex(pm => pm.Name).IsUnique();
 
             builder.Property(pm => pm.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             builder.HasData(
                 new PaymentMethod { Id = 1, Name = "Credit Card", IsActive = true },

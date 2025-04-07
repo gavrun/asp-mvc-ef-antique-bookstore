@@ -65,6 +65,116 @@ namespace AntiqueBookstore.Data.Configurations
                     RecommendedPrice = 750.00m,
                     ConditionId = 3, 
                     StatusId = 2
+                },
+                new Book
+                {
+                    Id = 2,
+                    Title = "The Tale of Genji",
+                    Publisher = "Imperial Court of Japan",
+                    PublicationDate = 1021,
+                    PurchasePrice = 3500.00m,
+                    RecommendedPrice = 12000.00m,
+                    ConditionId = 2,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 3,
+                    Title = "A Madman's Diary",
+                    Publisher = "New Youth Magazine",
+                    PublicationDate = 1918,
+                    PurchasePrice = 800.00m,
+                    RecommendedPrice = 2500.00m,
+                    ConditionId = 1,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 4,
+                    Title = "The Cairo Trilogy: Palace Walk",
+                    Publisher = "American University in Cairo Press",
+                    PublicationDate = 1956,
+                    PurchasePrice = 450.00m,
+                    RecommendedPrice = 1800.00m,
+                    ConditionId = 2,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 5,
+                    Title = "Things Fall Apart",
+                    Publisher = "William Heinemann Ltd.",
+                    PublicationDate = 1958,
+                    PurchasePrice = 1200.00m,
+                    RecommendedPrice = 4500.00m,
+                    ConditionId = 3,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 6,
+                    Title = "Ficciones",
+                    Publisher = "Editorial Sur",
+                    PublicationDate = 1944,
+                    PurchasePrice = 900.00m,
+                    RecommendedPrice = 3200.00m,
+                    ConditionId = 1,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 7,
+                    Title = "The Master and Margarita",
+                    Publisher = "YMCA Press",
+                    PublicationDate = 1967,
+                    PurchasePrice = 1500.00m,
+                    RecommendedPrice = 5800.00m,
+                    ConditionId = 2,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 8,
+                    Title = "Ulysses",
+                    Publisher = "Shakespeare and Company",
+                    PublicationDate = 1922,
+                    PurchasePrice = 4800.00m,
+                    RecommendedPrice = 18000.00m,
+                    ConditionId = 2,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 9,
+                    Title = "One Hundred Years of Solitude",
+                    Publisher = "Editorial Sudamericana",
+                    PublicationDate = 1967,
+                    PurchasePrice = 1200.00m,
+                    RecommendedPrice = 4500.00m,
+                    ConditionId = 1,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 10,
+                    Title = "The Name of the Rose",
+                    Publisher = "Bompiani",
+                    PublicationDate = 1980,
+                    PurchasePrice = 600.00m,
+                    RecommendedPrice = 2200.00m,
+                    ConditionId = 1,
+                    StatusId = 1
+                },
+                new Book
+                {
+                    Id = 11,
+                    Title = "Gitanjali",
+                    Publisher = "India Society of London",
+                    PublicationDate = 1912,
+                    PurchasePrice = 2200.00m,
+                    RecommendedPrice = 7500.00m,
+                    ConditionId = 3,
+                    StatusId = 1
                 }
             );
         }

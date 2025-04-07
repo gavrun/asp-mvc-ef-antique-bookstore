@@ -22,8 +22,8 @@ namespace AntiqueBookstore.Data.Configurations
                 .IsRequired();
 
             builder.Property(e => e.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             builder.Property(e => e.Comment)
                 .HasMaxLength(500)
@@ -72,6 +72,15 @@ namespace AntiqueBookstore.Data.Configurations
                     HireDate = new DateTime(2023, 3, 10),
                     IsActive = true,
                     ApplicationUserId = null 
+                },
+                new Employee
+                {
+                    Id = 3,
+                    FirstName = "New",
+                    LastName = "Billy",
+                    HireDate = new DateTime(2023, 5, 1),
+                    IsActive = true,
+                    ApplicationUserId = null // will stay null after seeding 
                 }
             );
         }

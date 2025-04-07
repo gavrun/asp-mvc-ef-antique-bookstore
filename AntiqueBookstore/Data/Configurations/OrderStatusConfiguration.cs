@@ -17,8 +17,8 @@ namespace AntiqueBookstore.Data.Configurations
             builder.HasIndex(os => os.Name).IsUnique();
 
             builder.Property(os => os.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             builder.HasData(
                 new OrderStatus { Id = 1, Name = "New", IsActive = true },

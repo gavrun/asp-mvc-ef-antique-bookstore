@@ -19,8 +19,8 @@ namespace AntiqueBookstore.Data.Configurations
                 .IsRequired(false); // Nullable
 
             builder.Property(ph => ph.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             // Relation to Employee configured in EmployeeConfiguration (WithOne)
 

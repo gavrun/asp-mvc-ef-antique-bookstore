@@ -20,8 +20,8 @@ namespace AntiqueBookstore.Data.Configurations
                 .HasMaxLength(255);
 
             builder.Property(r => r.IsActive)
-                .IsRequired()
-                .HasDefaultValue(true);
+                .IsRequired();
+                //.HasDefaultValue(true);
 
             // Seed Roles 'Manager, Sales'
             builder.HasData(

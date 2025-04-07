@@ -132,6 +132,96 @@ namespace AntiqueBookstore.Migrations
                             DeathYear = 1930,
                             FirstName = "Arthur",
                             LastName = "Conan Doyle"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Bio = "Japanese novelist and poet of the Heian period",
+                            BirthYear = 978,
+                            DeathYear = 1016,
+                            FirstName = "Murasaki",
+                            LastName = "Shikibu"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Bio = "Chinese writer, considered the founder of modern Chinese literature",
+                            BirthYear = 1881,
+                            DeathYear = 1936,
+                            FirstName = "Lu",
+                            LastName = "Xun"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Bio = "Egyptian writer who won the Nobel Prize for Literature",
+                            BirthYear = 1911,
+                            DeathYear = 2006,
+                            FirstName = "Naguib",
+                            LastName = "Mahfouz"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Bio = "Nigerian novelist, poet and critic",
+                            BirthYear = 1930,
+                            DeathYear = 2013,
+                            FirstName = "Chinua",
+                            LastName = "Achebe"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Bio = "Argentine short-story writer, essayist and poet",
+                            BirthYear = 1899,
+                            DeathYear = 1986,
+                            FirstName = "Jorge Luis",
+                            LastName = "Borges"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Bio = "Russian writer, physician and playwright",
+                            BirthYear = 1891,
+                            DeathYear = 1940,
+                            FirstName = "Mikhail",
+                            LastName = "Bulgakov"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Bio = "Irish novelist, short story writer and poet",
+                            BirthYear = 1882,
+                            DeathYear = 1941,
+                            FirstName = "James",
+                            LastName = "Joyce"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Bio = "Colombian novelist and Nobel Prize winner",
+                            BirthYear = 1927,
+                            DeathYear = 2014,
+                            FirstName = "Gabriel",
+                            LastName = "García Márquez"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Bio = "Italian novelist, literary critic and philosopher",
+                            BirthYear = 1932,
+                            DeathYear = 2016,
+                            FirstName = "Umberto",
+                            LastName = "Eco"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Bio = "Bengali polymath and Nobel Prize winner",
+                            BirthYear = 1861,
+                            DeathYear = 1941,
+                            FirstName = "Rabindranath",
+                            LastName = "Tagore"
                         });
                 });
 
@@ -188,6 +278,116 @@ namespace AntiqueBookstore.Migrations
                             RecommendedPrice = 750.00m,
                             StatusId = 2,
                             Title = "A Study in Scarlet"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ConditionId = 2,
+                            PublicationDate = 1021,
+                            Publisher = "Imperial Court of Japan",
+                            PurchasePrice = 3500.00m,
+                            RecommendedPrice = 12000.00m,
+                            StatusId = 1,
+                            Title = "The Tale of Genji"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ConditionId = 1,
+                            PublicationDate = 1918,
+                            Publisher = "New Youth Magazine",
+                            PurchasePrice = 800.00m,
+                            RecommendedPrice = 2500.00m,
+                            StatusId = 1,
+                            Title = "A Madman's Diary"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ConditionId = 2,
+                            PublicationDate = 1956,
+                            Publisher = "American University in Cairo Press",
+                            PurchasePrice = 450.00m,
+                            RecommendedPrice = 1800.00m,
+                            StatusId = 1,
+                            Title = "The Cairo Trilogy: Palace Walk"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ConditionId = 3,
+                            PublicationDate = 1958,
+                            Publisher = "William Heinemann Ltd.",
+                            PurchasePrice = 1200.00m,
+                            RecommendedPrice = 4500.00m,
+                            StatusId = 1,
+                            Title = "Things Fall Apart"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ConditionId = 1,
+                            PublicationDate = 1944,
+                            Publisher = "Editorial Sur",
+                            PurchasePrice = 900.00m,
+                            RecommendedPrice = 3200.00m,
+                            StatusId = 1,
+                            Title = "Ficciones"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ConditionId = 2,
+                            PublicationDate = 1967,
+                            Publisher = "YMCA Press",
+                            PurchasePrice = 1500.00m,
+                            RecommendedPrice = 5800.00m,
+                            StatusId = 1,
+                            Title = "The Master and Margarita"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ConditionId = 2,
+                            PublicationDate = 1922,
+                            Publisher = "Shakespeare and Company",
+                            PurchasePrice = 4800.00m,
+                            RecommendedPrice = 18000.00m,
+                            StatusId = 1,
+                            Title = "Ulysses"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ConditionId = 1,
+                            PublicationDate = 1967,
+                            Publisher = "Editorial Sudamericana",
+                            PurchasePrice = 1200.00m,
+                            RecommendedPrice = 4500.00m,
+                            StatusId = 1,
+                            Title = "One Hundred Years of Solitude"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ConditionId = 1,
+                            PublicationDate = 1980,
+                            Publisher = "Bompiani",
+                            PurchasePrice = 600.00m,
+                            RecommendedPrice = 2200.00m,
+                            StatusId = 1,
+                            Title = "The Name of the Rose"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ConditionId = 3,
+                            PublicationDate = 1912,
+                            Publisher = "India Society of London",
+                            PurchasePrice = 2200.00m,
+                            RecommendedPrice = 7500.00m,
+                            StatusId = 1,
+                            Title = "Gitanjali"
                         });
                 });
 
@@ -210,6 +410,56 @@ namespace AntiqueBookstore.Migrations
                         {
                             BookId = 1,
                             AuthorId = 1
+                        },
+                        new
+                        {
+                            BookId = 2,
+                            AuthorId = 2
+                        },
+                        new
+                        {
+                            BookId = 3,
+                            AuthorId = 3
+                        },
+                        new
+                        {
+                            BookId = 4,
+                            AuthorId = 4
+                        },
+                        new
+                        {
+                            BookId = 5,
+                            AuthorId = 5
+                        },
+                        new
+                        {
+                            BookId = 6,
+                            AuthorId = 6
+                        },
+                        new
+                        {
+                            BookId = 7,
+                            AuthorId = 7
+                        },
+                        new
+                        {
+                            BookId = 8,
+                            AuthorId = 8
+                        },
+                        new
+                        {
+                            BookId = 9,
+                            AuthorId = 9
+                        },
+                        new
+                        {
+                            BookId = 10,
+                            AuthorId = 10
+                        },
+                        new
+                        {
+                            BookId = 11,
+                            AuthorId = 11
                         });
                 });
 
@@ -354,9 +604,7 @@ namespace AntiqueBookstore.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -383,6 +631,38 @@ namespace AntiqueBookstore.Migrations
                             FirstName = "Hans",
                             IsActive = true,
                             LastName = "Müller"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "sophie.dubois@example.fr",
+                            FirstName = "Sophie",
+                            IsActive = true,
+                            LastName = "Dubois"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "haruki.tanaka@example.jp",
+                            FirstName = "Haruki",
+                            IsActive = true,
+                            LastName = "Tanaka"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "thabo.ndlovu@example.za",
+                            FirstName = "Thabo",
+                            IsActive = true,
+                            LastName = "Ndlovu"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Email = "isabella.fernandez@example.ar",
+                            FirstName = "Isabella",
+                            IsActive = true,
+                            LastName = "Fernandez"
                         });
                 });
 
@@ -445,6 +725,46 @@ namespace AntiqueBookstore.Migrations
                             Country = "Germany",
                             CustomerId = 1,
                             PostalCode = "10117"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AddressAlias = "Home",
+                            AddressLine1 = "15 Avenue des Champs-Élysées",
+                            City = "Paris",
+                            Country = "France",
+                            CustomerId = 2,
+                            PostalCode = "75008"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AddressAlias = "Home",
+                            AddressLine1 = "4-2-8 Shinjuku, Shinjuku-ku",
+                            City = "Tokyo",
+                            Country = "Japan",
+                            CustomerId = 3,
+                            PostalCode = "160-0022"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AddressAlias = "Home",
+                            AddressLine1 = "123 Nelson Mandela Boulevard",
+                            City = "Cape Town",
+                            Country = "South Africa",
+                            CustomerId = 4,
+                            PostalCode = "8001"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AddressAlias = "Home",
+                            AddressLine1 = "789 Avenida 9 de Julio",
+                            City = "Buenos Aires",
+                            Country = "Argentina",
+                            CustomerId = 5,
+                            PostalCode = "C1043"
                         });
                 });
 
@@ -473,9 +793,7 @@ namespace AntiqueBookstore.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -522,9 +840,7 @@ namespace AntiqueBookstore.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -607,9 +923,19 @@ namespace AntiqueBookstore.Migrations
                             Id = 1,
                             CustomerId = 1,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 6, 11, 45, 34, 445, DateTimeKind.Utc).AddTicks(1058),
+                            OrderDate = new DateTime(2025, 4, 6, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1294),
                             OrderStatusId = 1,
                             PaymentMethodId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerId = 3,
+                            DeliveryAddressId = 3,
+                            EmployeeId = 2,
+                            OrderDate = new DateTime(2025, 4, 4, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1304),
+                            OrderStatusId = 6,
+                            PaymentMethodId = 1
                         });
                 });
 
@@ -622,9 +948,7 @@ namespace AntiqueBookstore.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -692,9 +1016,7 @@ namespace AntiqueBookstore.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -795,9 +1117,7 @@ namespace AntiqueBookstore.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                        .HasColumnType("bit");
 
                     b.Property<int>("PositionId")
                         .HasColumnType("int");
@@ -870,6 +1190,20 @@ namespace AntiqueBookstore.Migrations
                             BookId = 1,
                             OrderId = 1,
                             SalePrice = 750.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BookId = 2,
+                            OrderId = 2,
+                            SalePrice = 1200.00m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BookId = 8,
+                            OrderId = 2,
+                            SalePrice = 950.00m
                         });
                 });
 

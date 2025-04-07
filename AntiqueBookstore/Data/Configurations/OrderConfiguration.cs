@@ -61,17 +61,29 @@ namespace AntiqueBookstore.Data.Configurations
             // Seed data
             builder.HasData(
                 new Order
-                    {
-                        Id = 1,
-                        OrderDate = DateTime.UtcNow.AddDays(-1),
-                        DeliveryDate = null,
-                        PaymentDate = null,
-                        CustomerId = 1,
-                        EmployeeId = 2,
-                        OrderStatusId = 1,
-                        PaymentMethodId = 2
-                    }
-                );
+                {
+                    Id = 1,
+                    OrderDate = DateTime.UtcNow.AddDays(-1),
+                    DeliveryDate = null,
+                    PaymentDate = null,
+                    CustomerId = 1,
+                    EmployeeId = 2,
+                    OrderStatusId = 1,
+                    PaymentMethodId = 2
+                },
+                new Order
+                {
+                    Id = 2,
+                    OrderDate = DateTime.UtcNow.AddDays(-3),
+                    DeliveryDate = null,
+                    DeliveryAddressId = 3,
+                    PaymentDate = null,
+                    CustomerId = 3,
+                    EmployeeId = 2,
+                    OrderStatusId = 6,
+                    PaymentMethodId = 1
+                }
+            );
         }
     }
 }

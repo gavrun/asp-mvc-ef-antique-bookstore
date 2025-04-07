@@ -31,8 +31,28 @@ namespace AntiqueBookstore.Data.Configurations
 
             // Seed data
             builder.HasData(
-                new Sale { Id = 1, SalePrice = 750.00m, OrderId = 1, BookId = 1 }
-                );
+                new Sale 
+                { 
+                    Id = 1, 
+                    SalePrice = 750.00m, 
+                    OrderId = 1, 
+                    BookId = 1 
+                },
+                new Sale 
+                {
+                    Id = 2,
+                    SalePrice = 1200.00m,
+                    OrderId = 2,
+                    BookId = 2
+                },
+                new Sale
+                {
+                    Id = 3,
+                    SalePrice = 950.00m,
+                    OrderId = 2,
+                    BookId = 8
+                }
+            );
         }
     }
 }
