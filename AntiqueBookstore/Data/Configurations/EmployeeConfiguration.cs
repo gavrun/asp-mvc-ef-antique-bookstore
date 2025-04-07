@@ -32,7 +32,7 @@ namespace AntiqueBookstore.Data.Configurations
             // Identity
             // Relation to ApplicationUser, 1-to-1, configured here, or in ApplicationUserConfiguration (not implemented)
             builder.HasOne(e => e.ApplicationUser)
-                   .WithOne(au => au.Employee) // TODO: Navigation property in ApplicationUser
+                   .WithOne(au => au.Employee) // NOTE: Navigation property in ApplicationUser
                    .HasForeignKey<Employee>(e => e.ApplicationUserId) // FK to Employee
                    .IsRequired(false) // Employee exists without an Identity user reference
                    .OnDelete(DeleteBehavior.SetNull); // Reset FK for the Employee if IdentityUser is deleted

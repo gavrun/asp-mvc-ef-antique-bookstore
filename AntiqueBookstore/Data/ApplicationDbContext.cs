@@ -14,10 +14,10 @@ namespace AntiqueBookstore.Data
     //    }
     //}
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> // hook up IdentityUser
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser> // hook up <ApplicationUser> (IdentityUser) to IdentityDbContext
     {
         // DbSet for main model entities
-        public DbSet<Book> Books { get; set; } // TODO: Rename to Books
+        public DbSet<Book> Books { get; set; } 
         public DbSet<Author> Authors { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Position> Positions { get; set; }
@@ -41,11 +41,13 @@ namespace AntiqueBookstore.Data
         // audit log for Sales
         public DbSet<SalesAuditLog> SalesAuditLogs { get; set; }
 
+
         // constructor with config options
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
+
 
         // for Fluent API configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)

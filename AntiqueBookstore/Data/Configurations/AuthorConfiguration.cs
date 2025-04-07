@@ -25,7 +25,7 @@ namespace AntiqueBookstore.Data.Configurations
             // By default nvarchar(max) or TEXT
 
 
-            // TODO: Constraints on 'BirthYear' and 'DeathYear' can be added at the application/validation level
+            // NOTE: Constraints on 'BirthYear' and 'DeathYear' can be added at the application/validation level
 
             // Seed data
             builder.HasData(

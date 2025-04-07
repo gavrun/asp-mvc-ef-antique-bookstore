@@ -24,6 +24,7 @@ namespace AntiqueBookstore
 
 
             // Identity configuration
+
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -38,12 +39,12 @@ namespace AntiqueBookstore
                                 options.Password.RequireLowercase = false;
                             })
                             .AddEntityFrameworkStores<ApplicationDbContext>()
-                            .AddDefaultTokenProviders();
+                            .AddDefaultTokenProviders()
+                            .AddDefaultUI(); // BUG: ApplicationPartManager
 
 
             // MVC configuration
-            builder.Services.AddRazorPages(); // INFO: load Razor first for Indentity
-
+            builder.Services.AddRazorPages(); 
             builder.Services.AddControllersWithViews();
             
 
@@ -51,12 +52,10 @@ namespace AntiqueBookstore
             var app = builder.Build();
 
 
-            // BUG: Seed user to Identity ISSUE!
+            // BUG: Seed user to Identity 
             if (app.Environment.IsDevelopment())
             {
                 await IdentitySeeder.SeedUserAsync(app);
-
-                //await DataSeeder.SeedDatabaseAsync(app);
             }
 
 
@@ -82,11 +81,10 @@ namespace AntiqueBookstore
             app.UseRouting();
 
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseAuthentication();  // Identity
-
-
+            
             // Endpoints
 
             // debug

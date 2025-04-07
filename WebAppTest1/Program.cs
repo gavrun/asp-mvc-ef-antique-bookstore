@@ -35,6 +35,7 @@ namespace WebAppTest1
                             })
                             .AddEntityFrameworkStores<ApplicationDbContext>()
                             .AddDefaultTokenProviders();
+                            //.AddDefaultUI(); 
 
 
             // REPRODUCE ISSUE
