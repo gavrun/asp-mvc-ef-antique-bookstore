@@ -2,10 +2,11 @@
 @using Microsoft.AspNetCore.Identity
 
 @* @inject SignInManager<IdentityUser> SignInManager *@
-@inject SignInManager<ApplicationUser> SignInManager
-
 @* @inject UserManager<IdentityUser> UserManager *@
+
+@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
@@ -26,6 +27,7 @@ else
     </li>
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        @* <a class="nav-link text-dark" href="/Identity/Account/Login">Login (Hardcoded)</a> *@
     </li>
 }
 </ul>

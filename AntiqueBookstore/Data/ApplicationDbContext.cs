@@ -56,14 +56,9 @@ namespace AntiqueBookstore.Data
             // Register all IEntityTypeConfiguration<TEntity> from the current assembly
 
             // Apply all configurations 
+
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-            // Apply custom configurations
-            // For example, global Query Filters or conventions.
-
-            // NOTE: Seed only static data here
-            //modelBuilder.Seed();
         }
     }
 }

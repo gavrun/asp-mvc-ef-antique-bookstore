@@ -19,9 +19,9 @@ namespace AntiqueBookstore
             // Context configuration, ApplicationDbContext, SQL Server, mode Scoped
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-                //UseNpgsql()
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 
             // Identity configuration
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -30,7 +30,7 @@ namespace AntiqueBookstore
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                             {
                                 // Conifgure Identity options
-                                //options.SignIn.RequireConfirmedAccount = true;
+                                options.SignIn.RequireConfirmedAccount = false;
                                 options.Password.RequireDigit = false;
                                 options.Password.RequiredLength = 4;
                                 options.Password.RequireNonAlphanumeric = false;
@@ -40,19 +40,25 @@ namespace AntiqueBookstore
                             .AddEntityFrameworkStores<ApplicationDbContext>()
                             .AddDefaultTokenProviders();
 
+
             // MVC configuration
             builder.Services.AddRazorPages(); // INFO: load Razor first for Indentity
+
             builder.Services.AddControllersWithViews();
             
 
             // Build the application instance
             var app = builder.Build();
 
-            // Seed non-static data 
+
+            // BUG: Seed user to Identity ISSUE!
             if (app.Environment.IsDevelopment())
             {
-                await DataSeeder.SeedDatabaseAsync(app);
+                await IdentitySeeder.SeedUserAsync(app);
+
+                //await DataSeeder.SeedDatabaseAsync(app);
             }
+
 
             // Middleware conveyor pipeline
 
@@ -75,16 +81,30 @@ namespace AntiqueBookstore
 
             app.UseRouting();
 
-            app.UseAuthentication();
+
             app.UseAuthorization();
 
+            app.UseAuthentication();  // Identity
+
+
             // Endpoints
-            app.MapRazorPages(); // INFO: load Razor first for Indentity
+
+            // debug
+            //app.MapGet("/ping", () => "pong");
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapRazorPages(); 
+            //    endpoints.MapControllers();
+            //});
+
+            app.MapRazorPages(); 
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            
+
+
             // Launch the application on Kestrel
             app.Run();
         }

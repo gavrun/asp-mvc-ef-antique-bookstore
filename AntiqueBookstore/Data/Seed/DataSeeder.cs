@@ -33,7 +33,7 @@ namespace AntiqueBookstore.Data.Seed
                     await SeedAppUserAsync(context, logger, services); // TODO: finish
 
 
-                    // Save changes from all seeding methods
+                    //Save changes from all seeding methods
                     if (context.ChangeTracker.HasChanges())
                     {
                         logger.LogInformation("Saving changes to the database...");
@@ -56,6 +56,7 @@ namespace AntiqueBookstore.Data.Seed
         private static async Task SeedAppUserAsync(ApplicationDbContext context, ILogger logger, IServiceProvider services)
         {
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
 
             if (!await context.Employees.AnyAsync() && !await userManager.Users.AnyAsync(u => u.Email.EndsWith("@example.com")))
             {
