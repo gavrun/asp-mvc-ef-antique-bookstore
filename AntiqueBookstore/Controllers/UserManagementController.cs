@@ -22,6 +22,7 @@ namespace AntiqueBookstore.Controllers
         }
 
 
+        // GET: UserManagement
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -40,12 +41,13 @@ namespace AntiqueBookstore.Controllers
                                                 .ToListAsync();
 
             // List of unlinked Employees
-            ViewData["AvailableEmployees"] = new SelectList(availableEmployees, "Id", "FirstName", "LastName");
+            ViewData["AvailableEmployees"] = new SelectList(availableEmployees, "Id", "FirstName");
 
 
             return View(users);
         }
 
+        // Post: Link employee
         [HttpPost]
         [ValidateAntiForgeryToken] // CSRF protection
         public async Task<IActionResult> LinkEmployee(string userId, int selectedEmployeeId)

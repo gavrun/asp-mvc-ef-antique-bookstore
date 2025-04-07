@@ -4,9 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AntiqueBookstore</title>
+    
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AntiqueBookstore.styles.css" asp-append-version="true" />
+
 </head>
 <body>
     <header>
@@ -22,11 +24,20 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
-                        <li>
-                            <a class="nav-link text-dark" href="#">Books Catalog</a> @* TO BE DONE LINK *@
+                        <li class="nav-item dropdown" >
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="inventoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Inventory</a>
+                            <ul class="dropdown-menu" aria-labelledby="inventoryDropdown">
+                                <li>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Authors" asp-action="Index">Authors</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Books" asp-action="Index">Books</a>
+                                </li>
+                            </ul>
                         </li>
-
+                        <li>
+                            <a class="nav-link text-dark" href="#">Orders</a> @* TO BE DONE LINK *@
+                        </li>
                         <li>
                             <a class="nav-link text-dark" href="#">Customers</a> @* TO BE DONE LINK *@
                         </li>
@@ -53,14 +64,18 @@
         </main>
     </div>
 
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - AntiqueBookstore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

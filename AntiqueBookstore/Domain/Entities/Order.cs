@@ -29,7 +29,7 @@ namespace AntiqueBookstore.Domain.Entities
         public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
 
 
-        // TODO: Add a calculated property for the Order total
+        // INFO: Add a calculated property for the Order total
         [NotMapped]
         public decimal TotalAmount => Sales.Sum(s => s.SalePrice);
     }

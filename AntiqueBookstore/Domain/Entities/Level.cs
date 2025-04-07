@@ -8,8 +8,7 @@
         public string? Description { get; set; }
         public bool IsActive { get; set; }
 
-        // Navigation property
-        // TODO: Link to Position 
+        // Navigation property to Position
         public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
     }
 }

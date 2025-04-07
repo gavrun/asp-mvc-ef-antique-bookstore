@@ -8,20 +8,21 @@ namespace AntiqueBookstore.Data.Seed
 {
     public static class IdentitySeeder
     {
-
+        // Seeding static data for Identity 
         public static async Task SeedUserAsync(IHost host)
         {
-            using (var scope = host.Services.CreateScope())
+            using (var scope = host.Services.CreateScope()) // visibility to resolve scoped services
             {
+                // Get services from the scope
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<Program>>(); // Logger
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>(); 
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                 try
                 {
-                    // Check and apply migrations
+                    // Check waiting and apply migrations
                     logger.LogInformation("Applying migrations...");
                     await context.Database.MigrateAsync();
                     logger.LogInformation("Migrations applied successfully.");
@@ -60,7 +61,7 @@ namespace AntiqueBookstore.Data.Seed
             var adminUser = new ApplicationUser { UserName = "manager@example.com", Email = "manager@example.com", EmailConfirmed = true };
             var salesUser = new ApplicationUser { UserName = "sales@example.com", Email = "sales@example.com", EmailConfirmed = true };
 
-            // Creating 
+            // Creating users
             if (await userManager.FindByEmailAsync(adminUser.Email) == null)
             {
                 logger.LogInformation("Creating user...");
@@ -77,7 +78,7 @@ namespace AntiqueBookstore.Data.Seed
                 logger.LogInformation("User created successfully");
             }
 
-            // Linking
+            // Linking users to employees
             var manager = await userManager.FindByEmailAsync("manager@example.com");
             var sales = await userManager.FindByEmailAsync("sales@example.com");
 
@@ -104,77 +105,6 @@ namespace AntiqueBookstore.Data.Seed
                 sales.EmployeeId = salesEmployee.Id;
                 await userManager.UpdateAsync(sales);
             }
-        }
-
-
-        private static async Task SeedAppUserAsync1(ApplicationDbContext context, ILogger logger, IServiceProvider services)
-        {
-            // Get UserManager from the service provider
-            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-
-            ApplicationUser managerUser = null;
-            ApplicationUser salesUser = null;
-            // example { UserName = managerEmail, Email = managerEmail, EmailConfirmed = true }
-            var managerEmail = "manager@example.com";
-            var salesEmail = "salesman@example.com";
-
-            // manager
-            if (await userManager.FindByEmailAsync(managerEmail) == null)
-            {
-                // Create a new user 
-                managerUser = new ApplicationUser { UserName = managerEmail, Email = managerEmail };
-                // Save the user to the database
-                logger.LogInformation("Creating user...");
-                await userManager.CreateAsync(managerUser, "manager");
-                logger.LogInformation("User created successfully");
-            }
-            else
-            {
-                logger.LogInformation($"User {managerEmail} already exists.");
-            }
-
-            // UserManager.CreateAsync similar to SaveChangesAsync
-
-            // TODO: Create link to Employees
-            if (managerUser != null)
-            {
-                var managerEmployee = await context.Employees.FindAsync(1);
-                if (managerEmployee == null)
-                {
-                    if (string.IsNullOrEmpty(managerEmployee.ApplicationUserId))
-                    {
-                        logger.LogWarning("Linking Employee..");
-                        managerEmployee.ApplicationUserId = managerUser.Id;
-                        logger.LogWarning("Employee linked successfully");
-                    }
-                    else
-                    {
-                        logger.LogWarning("Employee is already linked");
-                    }
-                }
-            }
-
-
-            // sales
-            if (await userManager.FindByEmailAsync(salesEmail) == null)
-            {
-                salesUser = new ApplicationUser { UserName = salesEmail, Email = salesEmail };
-
-                await userManager.CreateAsync(salesUser, "salesman");
-            }
-
-            if (salesUser != null)
-            {
-                var salesEmployee = await context.Employees.FindAsync(1);
-                if (salesEmployee == null)
-                {
-                    if (string.IsNullOrEmpty(salesEmployee.ApplicationUserId))
-                    {
-                        salesEmployee.ApplicationUserId = salesUser.Id;
-                    }
-                }
-            }
-
         }
 
     }
