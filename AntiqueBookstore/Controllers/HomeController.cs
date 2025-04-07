@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using AntiqueBookstore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AntiqueBookstore.Controllers
@@ -18,6 +19,7 @@ namespace AntiqueBookstore.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Manager")]
         public IActionResult Privacy()
         {
             return View();

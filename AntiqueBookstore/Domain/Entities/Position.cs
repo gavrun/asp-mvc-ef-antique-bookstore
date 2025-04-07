@@ -11,10 +11,10 @@ namespace AntiqueBookstore.Domain.Entities
         public WorkSchedule WorkSchedule { get; set; }
 
         // Foreign key 
-        public int RoleId { get; set; } // FK to Role
+        public int LevelId { get; set; } // FK to Level
 
-        // Navigation property for the many-to-many relationship with Role
-        public virtual Role Role { get; set; } = null!;
+        // Navigation property for the many-to-many relationship with Level
+        public virtual Level Level { get; set; } = null!;
 
         // Navigation property for the many-to-many relationship with PositionHistory
         public virtual ICollection<PositionHistory> PositionHistories { get; set; } = new List<PositionHistory>();

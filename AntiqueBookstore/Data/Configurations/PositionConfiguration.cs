@@ -21,16 +21,16 @@ namespace AntiqueBookstore.Data.Configurations
                 .IsRequired();
             // By default writes enum as int 
 
-            // Relationship to Role with in PK
-            builder.HasOne(p => p.Role)
+            // Relationship to Level with in PK
+            builder.HasOne(p => p.Level)
                    .WithMany(r => r.Positions)
-                   .HasForeignKey(p => p.RoleId)
-                   .OnDelete(DeleteBehavior.Restrict); // Cannot delete Role if there are Positions
+                   .HasForeignKey(p => p.LevelId)
+                   .OnDelete(DeleteBehavior.Restrict); // Cannot delete Level if there are Positions
 
             // Seed Positions "Store Manager", "Sales Associate"
             builder.HasData(
-                new Position { Id = 1, Title = "Store Manager", WorkSchedule = WorkSchedule.FullTime, RoleId = 2 },
-                new Position { Id = 2, Title = "Sales Associate", WorkSchedule = WorkSchedule.FullTime, RoleId = 3 }
+                new Position { Id = 1, Title = "Store Manager", WorkSchedule = WorkSchedule.FullTime, LevelId = 1 },
+                new Position { Id = 2, Title = "Sales Associate", WorkSchedule = WorkSchedule.FullTime, LevelId = 2 }
                 );
         }
     }

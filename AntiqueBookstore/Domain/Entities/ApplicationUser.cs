@@ -12,5 +12,6 @@ namespace AntiqueBookstore.Domain.Entities
 
         // Navigation property to Employee
         public virtual Employee? Employee { get; set; }
+        //public virtual Employee Employee { get; set; }
     }
 }

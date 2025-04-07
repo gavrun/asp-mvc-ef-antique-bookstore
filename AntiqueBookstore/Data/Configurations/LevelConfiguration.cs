@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AntiqueBookstore.Data.Configurations
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<Role> 
+    public class LevelConfiguration : IEntityTypeConfiguration<Level> 
     {
-        public void Configure(EntityTypeBuilder<Role> builder)
+        public void Configure(EntityTypeBuilder<Level> builder)
         {
             builder.HasKey(r => r.Id);
 
@@ -25,11 +25,8 @@ namespace AntiqueBookstore.Data.Configurations
 
             // Seed Roles 'Manager, Sales'
             builder.HasData(
-                new Role { Id = 1, Name = "Administrator", Description = "Full system access", IsActive = false },
-                // Administrator Role only can delete records from DB in UI, controls in UI not implemented
-                // No Role can delete records from SalesAuditLog
-                new Role { Id = 2, Name = "Manager", Description = "Manages store operations", IsActive = true },
-                new Role { Id = 3, Name = "Sales", Description = "Handles sales and customer interactions", IsActive = true }
+                new Level { Id = 1, Name = "Manager", Description = "Manages store operations", IsActive = true },
+                new Level { Id = 2, Name = "Sales", Description = "Handles sales and customer interactions", IsActive = true }
             );
 
             // TODO: Link to Position

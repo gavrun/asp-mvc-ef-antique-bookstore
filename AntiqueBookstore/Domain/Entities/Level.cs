@@ -1,6 +1,6 @@
 ﻿namespace AntiqueBookstore.Domain.Entities
 {
-    public class Role // instead of IdentityRole
+    public class Level // instead of IdentityRole
     {
         // Entity properties
         public int Id { get; set; } // in PK

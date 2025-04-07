@@ -4,19 +4,16 @@ using AntiqueBookstore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AntiqueBookstore.Data.Migrations
+namespace AntiqueBookstore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250407044317_InitialAppSchema")]
-    partial class InitialAppSchema
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -512,6 +509,52 @@ namespace AntiqueBookstore.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Level", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Levels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Manages store operations",
+                            IsActive = true,
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Handles sales and customer interactions",
+                            IsActive = true,
+                            Name = "Sales"
+                        });
+                });
+
             modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -564,7 +607,7 @@ namespace AntiqueBookstore.Data.Migrations
                             Id = 1,
                             CustomerId = 1,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 6, 4, 43, 16, 776, DateTimeKind.Utc).AddTicks(9198),
+                            OrderDate = new DateTime(2025, 4, 6, 11, 45, 34, 445, DateTimeKind.Utc).AddTicks(1058),
                             OrderStatusId = 1,
                             PaymentMethodId = 2
                         });
@@ -700,7 +743,7 @@ namespace AntiqueBookstore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("RoleId")
+                    b.Property<int>("LevelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -713,7 +756,7 @@ namespace AntiqueBookstore.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("LevelId");
 
                     b.HasIndex("Title")
                         .IsUnique();
@@ -724,14 +767,14 @@ namespace AntiqueBookstore.Data.Migrations
                         new
                         {
                             Id = 1,
-                            RoleId = 2,
+                            LevelId = 1,
                             Title = "Store Manager",
                             WorkSchedule = 0
                         },
                         new
                         {
                             Id = 2,
-                            RoleId = 3,
+                            LevelId = 2,
                             Title = "Sales Associate",
                             WorkSchedule = 0
                         });
@@ -786,59 +829,6 @@ namespace AntiqueBookstore.Data.Migrations
                             IsActive = true,
                             PositionId = 2,
                             StartDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Full system access",
-                            IsActive = false,
-                            Name = "Administrator"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Manages store operations",
-                            IsActive = true,
-                            Name = "Manager"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Handles sales and customer interactions",
-                            IsActive = true,
-                            Name = "Sales"
                         });
                 });
 
@@ -1202,13 +1192,13 @@ namespace AntiqueBookstore.Data.Migrations
 
             modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Position", b =>
                 {
-                    b.HasOne("AntiqueBookstore.Domain.Entities.Role", "Role")
+                    b.HasOne("AntiqueBookstore.Domain.Entities.Level", "Level")
                         .WithMany("Positions")
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("LevelId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("AntiqueBookstore.Domain.Entities.PositionHistory", b =>
@@ -1353,6 +1343,11 @@ namespace AntiqueBookstore.Data.Migrations
                     b.Navigation("PositionHistories");
                 });
 
+            modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Level", b =>
+                {
+                    b.Navigation("Positions");
+                });
+
             modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Sales");
@@ -1371,11 +1366,6 @@ namespace AntiqueBookstore.Data.Migrations
             modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Position", b =>
                 {
                     b.Navigation("PositionHistories");
-                });
-
-            modelBuilder.Entity("AntiqueBookstore.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("Positions");
                 });
 
             modelBuilder.Entity("AntiqueBookstore.Domain.Entities.SaleEvent", b =>

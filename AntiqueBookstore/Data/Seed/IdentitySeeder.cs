@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace AntiqueBookstore.Data.Seed
 {
@@ -15,6 +16,8 @@ namespace AntiqueBookstore.Data.Seed
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<Program>>(); // Logger
                 var context = services.GetRequiredService<ApplicationDbContext>();
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                 try
                 {
@@ -25,16 +28,86 @@ namespace AntiqueBookstore.Data.Seed
 
                     // Seed user
                     logger.LogInformation("Starting seeding...");
-                    await SeedAppUserAsync(context, logger, services);
+                    await SeedRolesAsync(roleManager, logger);
+                    await SeedUsersAsync(userManager, context, logger);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogInformation($"An error occurred during data seeding: {ex.Message}");
+                    logger.LogInformation($"An error occurred during seeding: {ex.Message}");
                 }
             }
         }
 
-        private static async Task SeedAppUserAsync(ApplicationDbContext context, ILogger logger, IServiceProvider services)
+        
+
+
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager, ILogger logger)
+        {
+            // Create roles in Identity
+            string[] roleNames = { "Manager", "Sales" };
+
+            foreach (var roleName in roleNames)
+            {
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+        }
+
+        public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager, ApplicationDbContext context, ILogger logger)
+        {
+            var adminUser = new ApplicationUser { UserName = "manager@example.com", Email = "manager@example.com", EmailConfirmed = true };
+            var salesUser = new ApplicationUser { UserName = "sales@example.com", Email = "sales@example.com", EmailConfirmed = true };
+
+            // Creating 
+            if (await userManager.FindByEmailAsync(adminUser.Email) == null)
+            {
+                logger.LogInformation("Creating user...");
+                await userManager.CreateAsync(adminUser, "manager");
+                await userManager.AddToRoleAsync(adminUser, "Manager");
+                logger.LogInformation("User created successfully");
+            }
+
+            if (await userManager.FindByEmailAsync(salesUser.Email) == null)
+            {
+                logger.LogInformation("Creating user...");
+                await userManager.CreateAsync(salesUser, "sales");
+                await userManager.AddToRoleAsync(salesUser, "Sales");
+                logger.LogInformation("User created successfully");
+            }
+
+            // Linking
+            var manager = await userManager.FindByEmailAsync("manager@example.com");
+            var sales = await userManager.FindByEmailAsync("sales@example.com");
+
+            var employees = await context.Employees
+                .Include(e => e.PositionHistories)
+                .ThenInclude(ph => ph.Position)
+                .ToListAsync();
+
+            var managerEmployee = employees
+                .FirstOrDefault(e => e.PositionHistories
+                .Any(ph => ph.Position.LevelId == 1 && ph.IsActive));
+            var salesEmployee = employees
+                .FirstOrDefault(e => e.PositionHistories
+                .Any(ph => ph.Position.LevelId == 2 && ph.IsActive));
+
+            if (manager != null && managerEmployee != null)
+            {
+                manager.EmployeeId = managerEmployee.Id;
+                await userManager.UpdateAsync(manager);
+            }
+
+            if (sales != null && salesEmployee != null)
+            {
+                sales.EmployeeId = salesEmployee.Id;
+                await userManager.UpdateAsync(sales);
+            }
+        }
+
+
+        private static async Task SeedAppUserAsync1(ApplicationDbContext context, ILogger logger, IServiceProvider services)
         {
             // Get UserManager from the service provider
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
@@ -44,7 +117,7 @@ namespace AntiqueBookstore.Data.Seed
             // example { UserName = managerEmail, Email = managerEmail, EmailConfirmed = true }
             var managerEmail = "manager@example.com";
             var salesEmail = "salesman@example.com";
-            
+
             // manager
             if (await userManager.FindByEmailAsync(managerEmail) == null)
             {
@@ -80,7 +153,7 @@ namespace AntiqueBookstore.Data.Seed
                     }
                 }
             }
-            
+
 
             // sales
             if (await userManager.FindByEmailAsync(salesEmail) == null)

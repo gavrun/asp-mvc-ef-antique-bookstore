@@ -21,7 +21,7 @@ namespace AntiqueBookstore.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Position> Positions { get; set; }
-        public DbSet<Role> Roles { get; set; } // User entity Role
+        public DbSet<Level> Levels { get; set; } // User entity Level
         public DbSet<Customer> Customers { get; set; }
         public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
         public DbSet<Order> Orders { get; set; }

@@ -15,6 +15,7 @@
 
         // Navigation property to ApplicationUser
         public virtual ApplicationUser? ApplicationUser { get; set; }
+        //public virtual ApplicationUser User { get; set; }
 
         // Navigation property to PositionHistory
         public virtual ICollection<PositionHistory> PositionHistories { get; set; } = new List<PositionHistory>();
