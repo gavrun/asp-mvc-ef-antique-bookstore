@@ -1,4 +1,5 @@
 using AntiqueBookstore.Data;
+using AntiqueBookstore.Data.Seed;
 using AntiqueBookstore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ namespace AntiqueBookstore
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,13 @@ namespace AntiqueBookstore
             // Build the application instance
             var app = builder.Build();
 
-            // Middleware 
+            // Seed non-static data 
+            if (app.Environment.IsDevelopment())
+            {
+                await DataSeeder.SeedDatabaseAsync(app);
+            }
+
+            // Middleware conveyor pipeline
 
             // Configure the HTTP request pipeline
             if (app.Environment.IsDevelopment())
