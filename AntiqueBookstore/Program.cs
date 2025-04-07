@@ -30,6 +30,7 @@ namespace AntiqueBookstore
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                             {
                                 // Conifgure Identity options
+                                //options.SignIn.RequireConfirmedAccount = true;
                                 options.Password.RequireDigit = false;
                                 options.Password.RequiredLength = 4;
                                 options.Password.RequireNonAlphanumeric = false;
@@ -40,8 +41,9 @@ namespace AntiqueBookstore
                             .AddDefaultTokenProviders();
 
             // MVC configuration
+            builder.Services.AddRazorPages(); // INFO: load Razor first for Indentity
             builder.Services.AddControllersWithViews();
-            //builder.Services.AddRazorPages();
+            
 
             // Build the application instance
             var app = builder.Build();
@@ -77,12 +79,12 @@ namespace AntiqueBookstore
             app.UseAuthorization();
 
             // Endpoints
+            app.MapRazorPages(); // INFO: load Razor first for Indentity
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             
-            app.MapRazorPages();
-
             // Launch the application on Kestrel
             app.Run();
         }
