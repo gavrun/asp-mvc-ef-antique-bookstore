@@ -1,0 +1,117 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Models.BookCreateViewModel
+
+@{
+    ViewData["Title"] = "Add New Book";
+}
+
+<h1>Add New Book</h1>
+
+<h4>Book Details</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <label asp-for="Publisher" class="form-label"></label>
+                    <input asp-for="Publisher" class="form-control" rows="3"></input>
+                    <span asp-validation-for="Publisher" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="PublicationDate" class="form-label"></label>
+                    <input asp-for="PublicationDate" class="form-control" rows="3"></input>
+                    <span asp-validation-for="PublicationDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="PurchasePrice" class="form-label"></label>
+                    <input asp-for="PurchasePrice" class="form-control" />
+                    <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="RecommendedPrice" class="form-label"></label>
+                    <textarea asp-for="RecommendedPrice" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="RecommendedPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="ConditionId" class="form-label"></label>
+                    <select asp-for="ConditionId" class="form-select" asp-items="Model.Conditions">
+                        <option value="">-- Select Condition --</option>
+                    </select>
+                    <span asp-validation-for="ConditionId" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="StatusId" class="form-label"></label>
+                    <select asp-for="StatusId" class="form-select" asp-items="Model.Statuses">
+                        <option value="">-- Select Status --</option>
+                    </select>
+                    <span asp-validation-for="StatusId" class="text-danger"></span>
+                </div>
+            </div>
+
+            @*<div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Authors" class="form-label"></label>
+                    <select asp-for="Authors" class="form-select" multiple asp-items="Model.Authors">
+                        @* <option value="">-- Select Author --</option> *@
+                    @*</select>
+                    <span asp-validation-for="Authors" class="text-danger"></span>
+                </div>
+            </div>*@
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label asp-for="SelectedAuthorIds" class="form-label"></label>
+                    <select asp-for="SelectedAuthorIds" class="form-select" asp-items="Model.Authors" multiple="multiple" size="5" />
+                    @* Size set list hight *@
+                    <span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
+                    <small class="form-text text-muted">Hold down CTRL (or Command) to select multiple authors.</small>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label asp-for="CoverImageFile" class="form-label"></label>
+                    <input asp-for="CoverImageFile" type="file" class="form-control" accept="image/jpeg, image/png, image/gif" /> @* Уточняем типы *@
+                    <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-primary">Create Book</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+<hr />
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

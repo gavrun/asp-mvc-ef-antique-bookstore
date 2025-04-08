@@ -56,7 +56,7 @@ namespace AntiqueBookstore.Controllers
         [ValidateAntiForgeryToken] // CSRF protection
         public async Task<IActionResult> Create([Bind("FirstName,LastName,BirthYear,DeathYear,Bio")] Author author) // All properties Author
         {
-            // Validation checks specified in the Author class or attributes
+            // Validation check specified in the Author class or attributes (on server)
             if (ModelState.IsValid)
             {
                 // add to context

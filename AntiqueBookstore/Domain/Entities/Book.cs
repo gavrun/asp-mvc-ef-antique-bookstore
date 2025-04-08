@@ -10,12 +10,16 @@ namespace AntiqueBookstore.Domain.Entities
         public string? Publisher { get; set; }
         public int PublicationDate { get; set; } // Year of publication
 
-        // Explicitly set the column type 
+        // Explicitly set the column type over Fluent API
         [Column(TypeName = "decimal(9, 2)")]
         public decimal? PurchasePrice { get; set; }
 
         [Column(TypeName = "decimal(9, 2)")]
         public decimal? RecommendedPrice { get; set; }
+
+        // Cover placeholder if null
+        public string? CoverImagePath { get; set; } 
+
 
         // Foreign key to BookCondition
         public int ConditionId { get; set; } // FK 
@@ -35,7 +39,7 @@ namespace AntiqueBookstore.Domain.Entities
 
 
         // NOTE: Optionally add unmapped property for easy access to Authors
-        // [NotMapped]
-        // public IEnumerable<Author> Authors => BookAuthors.Select(ba => ba.Author);
+        [NotMapped]
+        public IEnumerable<Author> Authors => BookAuthors.Select(ba => ba.Author);
     }
 }

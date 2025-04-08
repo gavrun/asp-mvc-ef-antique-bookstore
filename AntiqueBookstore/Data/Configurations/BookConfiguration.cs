@@ -41,6 +41,10 @@ namespace AntiqueBookstore.Data.Configurations
                    .HasPrecision(9, 2)
                    .IsRequired(false);
 
+            builder.Property(b => b.CoverImagePath)
+                   .HasMaxLength(255) // MAX_PATH
+                   .IsRequired(false);
+
             // Relation to BookCondition
             builder.HasOne(b => b.Condition)
                    .WithMany(bc => bc.Books)

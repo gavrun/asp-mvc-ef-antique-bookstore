@@ -236,6 +236,10 @@ namespace AntiqueBookstore.Migrations
                     b.Property<int>("ConditionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CoverImagePath")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<int>("PublicationDate")
                         .HasColumnType("int");
 
@@ -824,6 +828,14 @@ namespace AntiqueBookstore.Migrations
                             HireDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             LastName = "Williams"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FirstName = "New",
+                            HireDate = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            LastName = "Billy"
                         });
                 });
 
@@ -923,7 +935,7 @@ namespace AntiqueBookstore.Migrations
                             Id = 1,
                             CustomerId = 1,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 6, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1294),
+                            OrderDate = new DateTime(2025, 4, 6, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2786),
                             OrderStatusId = 1,
                             PaymentMethodId = 2
                         },
@@ -933,7 +945,7 @@ namespace AntiqueBookstore.Migrations
                             CustomerId = 3,
                             DeliveryAddressId = 3,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 4, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1304),
+                            OrderDate = new DateTime(2025, 4, 4, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2794),
                             OrderStatusId = 6,
                             PaymentMethodId = 1
                         });

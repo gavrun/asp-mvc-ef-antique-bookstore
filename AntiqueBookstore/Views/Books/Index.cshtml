@@ -1,0 +1,77 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model IEnumerable<AntiqueBookstore.Domain.Entities.Book>
+
+@{
+    ViewData["Title"] = "Book Catalog";
+
+    // Default cover image
+    string defaultCoverPath = "/images/covers/book_no_cover.jpg"; 
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+
+    <a asp-action="Create" class="btn btn-primary mb-3">Add New Book</a>
+</p>
+
+
+@if (Model != null && Model.Any())
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        
+        @foreach (var item in Model)
+        {
+            @* Card styling with full height and shadow *@
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    
+                    @{
+                        // Image path: use book's path or default if null/empty
+                        var imagePath = string.IsNullOrEmpty(item.CoverImagePath) ? defaultCoverPath : item.CoverImagePath;
+                    }
+
+                    <img src="@imagePath" class="card-img-top" alt="Cover for @item.Title" style="height: 250px; object-fit: cover;">
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                        <p class="card-text small text-muted">
+                            
+                            @if (item.BookAuthors != null && item.BookAuthors.Any())
+                            {
+                                <span>By: @string.Join(", ", item.BookAuthors.Select(ba => ba.Author.FirstName))</span> <br />
+                            }
+                            <span>Published: @Html.DisplayFor(modelItem => item.PublicationDate)</span>
+                        </p>
+
+                        <p class="card-text fw-bold">
+                            @if (item.RecommendedPrice.HasValue)
+                            {
+                                @item.RecommendedPrice.Value.ToString("C") // Format as currency
+                            }
+                            else
+                            {
+                                <span>Price not available</span>
+                            }
+                        </p>
+
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                            </div>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No books found in the catalog.</p>
+}

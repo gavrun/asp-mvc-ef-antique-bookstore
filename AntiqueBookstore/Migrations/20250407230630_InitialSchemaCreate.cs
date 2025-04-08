@@ -337,6 +337,7 @@ namespace AntiqueBookstore.Migrations
                     PublicationDate = table.Column<int>(type: "int", nullable: false),
                     PurchasePrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: true),
                     RecommendedPrice = table.Column<decimal>(type: "decimal(9,2)", precision: 9, scale: 2, nullable: true),
+                    CoverImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     ConditionId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -600,7 +601,8 @@ namespace AntiqueBookstore.Migrations
                 values: new object[,]
                 {
                     { 1, null, null, "Jane", new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Smith" },
-                    { 2, null, null, "Bob", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Williams" }
+                    { 2, null, null, "Bob", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Williams" },
+                    { 3, null, null, "New", new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Billy" }
                 });
 
             migrationBuilder.InsertData(
@@ -644,20 +646,20 @@ namespace AntiqueBookstore.Migrations
 
             migrationBuilder.InsertData(
                 table: "Books",
-                columns: new[] { "Id", "ConditionId", "PublicationDate", "Publisher", "PurchasePrice", "RecommendedPrice", "StatusId", "Title" },
+                columns: new[] { "Id", "ConditionId", "CoverImagePath", "PublicationDate", "Publisher", "PurchasePrice", "RecommendedPrice", "StatusId", "Title" },
                 values: new object[,]
                 {
-                    { 1, 3, 1887, "Ward Lock & Co", 150.00m, 750.00m, 2, "A Study in Scarlet" },
-                    { 2, 2, 1021, "Imperial Court of Japan", 3500.00m, 12000.00m, 1, "The Tale of Genji" },
-                    { 3, 1, 1918, "New Youth Magazine", 800.00m, 2500.00m, 1, "A Madman's Diary" },
-                    { 4, 2, 1956, "American University in Cairo Press", 450.00m, 1800.00m, 1, "The Cairo Trilogy: Palace Walk" },
-                    { 5, 3, 1958, "William Heinemann Ltd.", 1200.00m, 4500.00m, 1, "Things Fall Apart" },
-                    { 6, 1, 1944, "Editorial Sur", 900.00m, 3200.00m, 1, "Ficciones" },
-                    { 7, 2, 1967, "YMCA Press", 1500.00m, 5800.00m, 1, "The Master and Margarita" },
-                    { 8, 2, 1922, "Shakespeare and Company", 4800.00m, 18000.00m, 1, "Ulysses" },
-                    { 9, 1, 1967, "Editorial Sudamericana", 1200.00m, 4500.00m, 1, "One Hundred Years of Solitude" },
-                    { 10, 1, 1980, "Bompiani", 600.00m, 2200.00m, 1, "The Name of the Rose" },
-                    { 11, 3, 1912, "India Society of London", 2200.00m, 7500.00m, 1, "Gitanjali" }
+                    { 1, 3, null, 1887, "Ward Lock & Co", 150.00m, 750.00m, 2, "A Study in Scarlet" },
+                    { 2, 2, null, 1021, "Imperial Court of Japan", 3500.00m, 12000.00m, 1, "The Tale of Genji" },
+                    { 3, 1, null, 1918, "New Youth Magazine", 800.00m, 2500.00m, 1, "A Madman's Diary" },
+                    { 4, 2, null, 1956, "American University in Cairo Press", 450.00m, 1800.00m, 1, "The Cairo Trilogy: Palace Walk" },
+                    { 5, 3, null, 1958, "William Heinemann Ltd.", 1200.00m, 4500.00m, 1, "Things Fall Apart" },
+                    { 6, 1, null, 1944, "Editorial Sur", 900.00m, 3200.00m, 1, "Ficciones" },
+                    { 7, 2, null, 1967, "YMCA Press", 1500.00m, 5800.00m, 1, "The Master and Margarita" },
+                    { 8, 2, null, 1922, "Shakespeare and Company", 4800.00m, 18000.00m, 1, "Ulysses" },
+                    { 9, 1, null, 1967, "Editorial Sudamericana", 1200.00m, 4500.00m, 1, "One Hundred Years of Solitude" },
+                    { 10, 1, null, 1980, "Bompiani", 600.00m, 2200.00m, 1, "The Name of the Rose" },
+                    { 11, 3, null, 1912, "India Society of London", 2200.00m, 7500.00m, 1, "Gitanjali" }
                 });
 
             migrationBuilder.InsertData(
@@ -675,7 +677,7 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 6, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1294), 1, null, 2 });
+                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 6, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2786), 1, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "Positions",
@@ -707,7 +709,7 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 4, 4, 13, 5, 36, 256, DateTimeKind.Utc).AddTicks(1304), 6, null, 1 });
+                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 4, 4, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2794), 6, null, 1 });
 
             migrationBuilder.InsertData(
                 table: "PositionHistories",
