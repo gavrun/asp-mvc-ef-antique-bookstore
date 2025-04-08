@@ -2,7 +2,7 @@
 
 ## Overview
 
-"Antique Bookstore" is a study project that demonstrates the development of a web application on the ASP.NET Core MVC platform using Entity Framework Core. The application is originally designed to replace oldfashioned index cards and lists, made to manage a catalog of antique books store, place and manage orders, keep orders history, etc.
+**"Antique Bookstore"** is a study project that demonstrates development of a web application on the ASP.NET Core MVC platform using Entity Framework Core. The application is originally designed to replace oldfashioned index cards and lists, made to manage a catalog of antique books store, place and manage orders, keep orders history, etc.
 
 [comment]: ![Label](images/2025-04-06-104845.png)
 
@@ -35,7 +35,8 @@
     │   ├── development_sdlc_agile.md
     │   ├── project_plan.md
     │   ├── project_tree.txt
-    │   └── ps-draw-project-tree.ps1
+    │   ├── ps-draw-project-tree.ps1
+    │   └── ps-dump-project-code.ps1
     └── testing
         ├── test_case.md
         └── test_plan.md
@@ -63,10 +64,24 @@ AntiqueBookstore
 ├── Services
 ├── TagHelpers
 ├── Views
+│   ├── Authors
+│   ├── Books
+│   ├── Customers
+│   ├── Home
+│   ├── Orders
+│   ├── Shared
+│   └── UserManagement
 └── wwwroot
     ├── css
+    ├── images
+    │   └── covers
     ├── js
     └── lib
+        ├── bootstrap
+        ├── bootswatch
+        ├── jquery
+        ├── jquery-validation
+        └── jquery-validation-unobtrusive
 ```
 
 ### Requirements and steps to deploy
