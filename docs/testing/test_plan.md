@@ -17,6 +17,6 @@ Ensure the developed application meets functional functional requirements define
 ## Scope of Testing 
 
 *   Identity (registration, login).
-*   MVC pages.
+*   MVC Pages.
 *   MVC Controllers.
 *   Etc.
