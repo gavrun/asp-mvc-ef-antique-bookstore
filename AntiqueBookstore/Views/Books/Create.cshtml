@@ -14,6 +14,7 @@
 <hr />
 
 <div class="row">
+
     <div class="col-md-8">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
 
@@ -49,7 +50,7 @@
                 </div>
                 <div class="col-md-6">
                     <label asp-for="RecommendedPrice" class="form-label"></label>
-                    <textarea asp-for="RecommendedPrice" class="form-control" rows="3"></textarea>
+                    <input asp-for="RecommendedPrice" class="form-control" rows="3"></input>
                     <span asp-validation-for="RecommendedPrice" class="text-danger"></span>
                 </div>
             </div>
@@ -84,17 +85,21 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label asp-for="SelectedAuthorIds" class="form-label"></label>
-                    <select asp-for="SelectedAuthorIds" class="form-select" asp-items="Model.Authors" multiple="multiple" size="5" />
-                    @* Size set list hight *@
+                    @* ISSUE: use an explicit closing tag </select> *@
+                    <select asp-for="SelectedAuthorIds" asp-items="Model.Authors" class="form-control" multiple="multiple" size="6" ></select>
+                    @* Size sets list hight *@
                     <span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
-                    <small class="form-text text-muted">Hold down CTRL (or Command) to select multiple authors.</small>
+                    @* <small class="form-text text-muted">Hold down CTRL (or Command) to select multiple authors.</small> *@
                 </div>
+
+                @* Button "Add New Author" *@
+                @* <a asp-controller="Authors" asp-action="Create" target="_blank" class="btn btn-sm btn-link mt-1">Add New Author</a> *@
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <label asp-for="CoverImageFile" class="form-label"></label>
-                    <input asp-for="CoverImageFile" type="file" class="form-control" accept="image/jpeg, image/png, image/gif" /> @* Уточняем типы *@
+                    <label asp-for="CoverImageFile" class="control-label"></label>
+                    <input asp-for="CoverImageFile" type="file" class="form-control" /> @* Validate types accept="image/jpeg, image/png, image/gif" *@
                     <span asp-validation-for="CoverImageFile" class="text-danger"></span>
                 </div>
             </div>
@@ -106,7 +111,27 @@
 
         </form>
     </div>
+
+    <div class="col-md-3 offset-md-1">
+        <h5>[INFO] Considerations</h5>
+        <hr />
+        <p>
+            <strong>Book Title:</strong> Please enter carefuly bla bla bla. 
+        </p>
+        <p>
+            <strong>Publisher:</strong> The concept of publishing house bla bla.
+        </p>
+        <p>
+            <strong>Dates:</strong> Most of the date a book was published can be bla bla.
+        </p>
+        <p>
+            <strong>Cover:</strong> Upload a clear image of a book cover (JPG, PNG, GIF format, max 5MB).
+        </p>
+
+    </div>
+
 </div>
+
 <hr />
 
 

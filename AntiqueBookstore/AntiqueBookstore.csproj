@@ -20,7 +20,6 @@
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Domain\Exceptions\" />
     <Folder Include="TagHelpers\" />
-    <Folder Include="Services\" />
     <Folder Include="wwwroot\images\covers\" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ namespace AntiqueBookstore.Domain.Entities
         // extend properties of a system user
 
 
-        // TODO: Link to Employee
+        // NOTE: Link to Employee
         public int? EmployeeId { get; set; }
 
         // Navigation property to Employee

@@ -8,16 +8,15 @@
     ViewData["Title"] = "Book Catalog";
 
     // Default cover image
-    string defaultCoverPath = "/images/covers/book_no_cover.jpg"; 
+    string defaultCoverPath = "/images/covers/book_cover_no.jpg"; 
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <p>
-
     <a asp-action="Create" class="btn btn-primary mb-3">Add New Book</a>
 </p>
-
+<hr />
 
 @if (Model != null && Model.Any())
 {
@@ -75,3 +74,5 @@ else
 {
     <p>No books found in the catalog.</p>
 }
+
+<hr />

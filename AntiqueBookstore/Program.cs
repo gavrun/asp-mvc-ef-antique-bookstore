@@ -1,6 +1,7 @@
 using AntiqueBookstore.Data;
 using AntiqueBookstore.Data.Seed;
 using AntiqueBookstore.Domain.Entities;
+using AntiqueBookstore.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +47,10 @@ namespace AntiqueBookstore
             // MVC configuration
             builder.Services.AddRazorPages(); 
             builder.Services.AddControllersWithViews();
-            
+
+            // Services configuration
+            builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
+
 
             // Build the application instance
             var app = builder.Build();

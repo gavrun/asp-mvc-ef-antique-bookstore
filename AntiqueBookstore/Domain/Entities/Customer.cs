@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        public string? Email { get; set; } // TODO: Add Email of course, Nullable
+        public string? Email { get; set; } // NOTE: Add Email of course, Nullable
         public string? Phone { get; set; } // Nullable
         public bool IsActive { get; set; }
         public string? Comment { get; set; }

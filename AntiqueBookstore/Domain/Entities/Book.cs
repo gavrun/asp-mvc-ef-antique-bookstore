@@ -5,7 +5,7 @@ namespace AntiqueBookstore.Domain.Entities
     public class Book
     {
         // Entity properties
-        public int Id { get; set; } // UNDO: named PK
+        public int Id { get; set; } // NOTE: named PK
         public string Title { get; set; } = string.Empty;
         public string? Publisher { get; set; }
         public int PublicationDate { get; set; } // Year of publication

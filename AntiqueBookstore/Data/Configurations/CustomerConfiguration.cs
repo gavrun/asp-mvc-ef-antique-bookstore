@@ -19,7 +19,7 @@ namespace AntiqueBookstore.Data.Configurations
                 .HasMaxLength(50);
 
             builder.Property(c => c.Email)
-                .HasMaxLength(100) // TODO: Default length for an email 
+                .HasMaxLength(100) // NOTE: Default length for an email 
                 .IsRequired(false);
 
             builder.HasIndex(c => c.Email).IsUnique(); // Email must be unique
