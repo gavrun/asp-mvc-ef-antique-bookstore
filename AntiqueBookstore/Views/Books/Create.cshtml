@@ -86,21 +86,25 @@
                 <div class="col-md-12">
                     <label asp-for="SelectedAuthorIds" class="form-label"></label>
                     @* ISSUE: use an explicit closing tag </select> *@
-                    <select asp-for="SelectedAuthorIds" asp-items="Model.Authors" class="form-control" multiple="multiple" size="6" ></select>
+                    <select asp-for="SelectedAuthorIds" asp-items="Model.Authors" id="authorSelectList" class="form-control" multiple="multiple" size="12" ></select>
                     @* Size sets list hight *@
                     <span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
                     @* <small class="form-text text-muted">Hold down CTRL (or Command) to select multiple authors.</small> *@
                 </div>
-
-                @* Button "Add New Author" *@
-                @* <a asp-controller="Authors" asp-action="Create" target="_blank" class="btn btn-sm btn-link mt-1">Add New Author</a> *@
+                @* TODO: Button "Add New Author" below *@
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <label asp-for="CoverImageFile" class="control-label"></label>
                     <input asp-for="CoverImageFile" type="file" class="form-control" /> @* Validate types accept="image/jpeg, image/png, image/gif" *@
                     <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-2 offset-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addAuthorModal">
+                        <i class="bi bi-plus-circle"></i> Add New Author
+                    </button>
                 </div>
             </div>
 
@@ -134,9 +138,126 @@
 
 <hr />
 
+@* TODO: Bootstrap Modal window AJAX *@
+
+<div class="modal fade" id="addAuthorModal" tabindex="-1" aria-labelledby="addAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAuthorModalLabel">Add New Author</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body" id="addAuthorModalBody">
+                @* Create Author form *@
+                Loading...
+            </div>
+
+            @* INFO: Footer can be removed if Submit is inside loaded form *@
+            @* <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveAuthorButton">Save Author</button>
+            </div> *@
+
+        </div>
+    </div>
+</div>
+
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function () {
+
+            var authorModal = new bootstrap.Modal(document.getElementById('addAuthorModal'));
+            var authorModalBody = $('#addAuthorModalBody');
+            var authorSelectList = $('#authorSelectList'); // select
+            var authorAjaxErrorDiv = $('#authorAjaxError'); // error modal 
+
+            // OPEN view 
+
+            $('#addAuthorModal').on('show.bs.modal', function (event) {
+                // content filler string 
+                authorModalBody.html('Loading...');
+                // cleanup hide content errors
+                if(authorAjaxErrorDiv.length) authorAjaxErrorDiv.hide().text('');
+
+                // Load the Author create form via AJAX [GET]
+                $.get('/Authors/GetAuthorCreatePartial') // action return _CreateAuthorPartial
+                    .done(function (data) {
+                        authorModalBody.html(data);
+                        // parse validators
+                        $.validator.unobtrusive.parse(authorModalBody.find('form'));
+                    })
+                    .fail(function () {
+                        authorModalBody.html('<div class="alert alert-danger">Failed to load author form. Please try again.</div>');
+                    });
+            });
+
+            // SEND form
+
+            // Event delegation $(document).on(...) for the form which loaded dynamically
+            $(document).on('submit', '#createAuthorAjaxForm', function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var errorDiv = form.find('#authorAjaxError');
+                 errorDiv.hide().text(''); 
+
+                // Client-side validation
+                if (!form.valid()) {
+                    return; 
+                }
+
+                // Send form data via AJAX [POST], use serialize data
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'), 
+                    data: form.serialize(), 
+                    success: function (response) {
+                        console.log(response);
+
+                        if (response.success) {
+                            // ok
+                            authorModal.hide();
+
+                            // push to select list
+                            var newOption = new Option(response.displayName, response.id, false, true);
+                            authorSelectList.append(newOption);
+
+                            // show success message (Toastr, CSS JS, non-blocking notification)
+                            //toastr.success('Author "' + response.displayName + '" added successfully!');
+
+                        } else {
+                            // Error: server validation or other
+                            var errorMessage = "An error occurred.";
+                            
+                            if (response.errors && response.errors.length > 0) {
+                                errorMessage = response.errors.join('<br>');
+                            } else if (response.message) {
+                                errorMessage = response.message; 
+                            }
+                            errorDiv.html(errorMessage).show(); // in modal window
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        // Error: network or server 
+                        console.error("AJAX Error:", textStatus, errorThrown);
+                         errorDiv.text('A network or server error occurred. Please try again.').show();
+                    }
+
+                });
+            });
+
+             // CLEAN form 
+
+             $('#addAuthorModal').on('hidden.bs.modal', function (event) {
+                 authorModalBody.html('Loading...'); 
+             });
+        });
+    </script>
 }

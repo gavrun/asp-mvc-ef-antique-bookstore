@@ -1,5 +1,6 @@
 ﻿using AntiqueBookstore.Data;
 using AntiqueBookstore.Domain.Entities;
+using AntiqueBookstore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,9 @@ namespace AntiqueBookstore.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        
+        private readonly ILogger<AuthorsController> _logger; // Logger for AJAX
+
+
         public AuthorsController(ApplicationDbContext context)
         {
             _context = context;
@@ -54,7 +57,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Authors/Create
         [HttpPost]
         [ValidateAntiForgeryToken] // CSRF protection
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,BirthYear,DeathYear,Bio")] Author author) // All properties Author
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,BirthYear,DeathYear,Bio")] Author author) // All Author's properties to bind
         {
             // Validation check specified in the Author class or attributes (on server)
             if (ModelState.IsValid)
@@ -71,6 +74,64 @@ namespace AntiqueBookstore.Controllers
             // If the model is invalid, return the user to the same form to correct the errors
             // The data entered will be kept in the form
             return View(author);
+        }
+
+        // GET: /Authors/_CreateAuthorPartial
+        [HttpGet]
+        public IActionResult GetAuthorCreatePartial()
+        {
+            // empty model
+            return PartialView("_CreateAuthorPartial", new AuthorCreateAjaxViewModel());
+        }
+
+        // POST: /Authors/CreateAuthorAjax
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAuthorAjax([Bind("FirstName,LastName,BirthYear,DeathYear,Bio")] AuthorCreateAjaxViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var author = new Author
+                {
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    BirthYear = viewModel.BirthYear,
+                    DeathYear = viewModel.DeathYear,
+                    Bio = viewModel.Bio
+                };
+
+                try
+                {
+                    _context.Authors.Add(author);
+
+                    await _context.SaveChangesAsync();
+
+                    // OKAY return JSON with ID and display "Full Name"
+                    return Json(new
+                    {
+                        success = true,
+                        id = author.Id,
+                        displayName = $"{author.FirstName} {author.LastName}"
+                    });
+                }
+                catch (DbUpdateException ex)
+                {
+                    // Ошибка БД
+                    _logger.LogError(ex, "Error saving new Author via AJAX.");
+                    return Json(new { success = false, message = "Database error occurred while saving the author." });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Unexpected error saving new author via AJAX.");
+                    return Json(new { success = false, message = "An unexpected error occurred." });
+                }
+            }
+            // INVALIDATED return JSON error or PartialView errors
+            var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                          .Select(e => e.ErrorMessage)
+                                          .ToList();
+            // JsonResult
+            return Json(new { success = false, errors = errors });
         }
 
         // GET: Authors/Edit/5
@@ -95,7 +156,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Authors/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Biography")] Author author) // Needs Id in Bind()
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,BirthYear,DeathYear,Bio")] Author author) // Needs Id in Bind()
         {
             // Check if the ID from the route matches the ID in the model
             if (id != author.Id)
