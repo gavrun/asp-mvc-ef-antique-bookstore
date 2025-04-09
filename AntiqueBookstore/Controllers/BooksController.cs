@@ -25,6 +25,10 @@ namespace AntiqueBookstore.Controllers
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
             _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
+
+            _logger = logger;
+
+            _fileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
         }
 
         // GET: /Books or /Books/Index
@@ -47,36 +51,8 @@ namespace AntiqueBookstore.Controllers
         // GET: Books/Create
         public async Task<IActionResult> Create()
         {
-            // Get all authors and sort them for form dropdowns
-
-            //var authorsData = await _context.Authors
-            //    .OrderBy(a => a.FirstName)
-            //    .Select(a => new { Value = a.Id, Text = (a.FirstName ?? "") + " " + (a.LastName ?? "") }) // Projection to an anonymous type {"Value", "Text"}
-            //    .ToListAsync();
-
-            //var authors = await _context.Authors
-            //    .OrderBy(a => a.FirstName)
-            //    .ToListAsync();
-
-            //var conditions = await _context.BookConditions
-            //    .OrderBy(c => c.Name)
-            //    .ToListAsync();
-
-            //var statuses = await _context.BookStatuses
-            //    .OrderBy(s => s.Name)
-            //    .ToListAsync();
-
             // TODO: refactor Repopulate 
             var viewModel = new BookCreateViewModel();
-
-            //var viewModel = new BookCreateViewModel
-            //{
-            //    // SelectList
-            //    // NOTE: many-to-many MultiSelectList
-            //    Authors = new MultiSelectList(authorsData, "Value", "Text"), // BUG: ui issue, authors vs authorsData
-            //    Conditions = new SelectList(conditions, "Id", "Name"),
-            //    Statuses = new SelectList(statuses, "Id", "Name")
-            //};
 
             await PopulateViewModelListsAsync(viewModel);
 
@@ -123,23 +99,6 @@ namespace AntiqueBookstore.Controllers
 
                 await PopulateViewModelListsAsync(viewModel);
 
-                //var authorsData = await _context.Authors
-                //    .OrderBy(a => a.FirstName)
-                //    .Select(a => new { Value = a.Id, Text = (a.FirstName ?? "") + " " + (a.LastName ?? "") })
-                //    .ToListAsync();
-
-                // Repopulate, SelectList 
-                //viewModel.Authors = new MultiSelectList(await _context.Authors 
-                //    .OrderBy(a => a.FirstName)
-                //    .ToListAsync(), "Id", "Name", viewModel.Authors);
-                //viewModel.Conditions = new SelectList(await _context.BookConditions
-                //    .OrderBy(c => c.Name)
-                //    .ToListAsync(), "Id", "Name", viewModel.ConditionId);
-                //viewModel.Statuses = new SelectList(await _context.BookStatuses
-                //    .OrderBy(s => s.Name)
-                //    .ToListAsync(), "Id", "Name", viewModel.StatusId);
-
-
                 // Same form with the input preserved and validation error messages
                 return View(viewModel); 
             }
@@ -152,89 +111,7 @@ namespace AntiqueBookstore.Controllers
 
             if (viewModel.CoverImageFile != null && viewModel.CoverImageFile.Length > 0)
             {
-                // Type validation
-                //var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                //var extension = Path.GetExtension(viewModel.CoverImageFile.FileName)
-                //    .ToLowerInvariant();
-
-                //if (string.IsNullOrEmpty(extension) || !allowedExtensions.Contains(extension))
-                //{
-                //    ModelState.AddModelError("CoverImageFile", "Invalid file type. Only JPG, PNG, GIF are allowed.");
-
-                //    // Repopulate
-                //    viewModel.Authors = new MultiSelectList(await _context.Authors
-                //        .OrderBy(a => a.FirstName)
-                //        .ToListAsync(), "Id", "FirstName", viewModel.SelectedAuthorIds); 
-                //    viewModel.Conditions = new SelectList(await _context.BookConditions
-                //        .OrderBy(c => c.Name)
-                //        .ToListAsync(), "Id", "Name", viewModel.ConditionId);
-                //    viewModel.Statuses = new SelectList(await _context.BookStatuses
-                //        .OrderBy(s => s.Name)
-                //        .ToListAsync(), "Id", "Name", viewModel.StatusId);
-
-                //    return View(viewModel);
-                //}
-
-                // Validate file size (max 5 MB)
-                //const long maxFileSize = 5 * 1024 * 1024;
-                //if (viewModel.CoverImageFile.Length > maxFileSize)
-                //{
-                //    ModelState.AddModelError("CoverImageFile", $"File size cannot exceed {maxFileSize / 1024 / 1024} MB.");
-
-                //    //Repopulate
-                //    viewModel.Authors = new MultiSelectList(await _context.Authors
-                //        .OrderBy(a => a.FirstName)
-                //        .ToListAsync(), "Id", "FirstName", viewModel.SelectedAuthorIds); // FIX
-                //    viewModel.Conditions = new SelectList(await _context.BookConditions
-                //        .OrderBy(c => c.Name)
-                //        .ToListAsync(), "Id", "Name", viewModel.ConditionId);
-                //    viewModel.Statuses = new SelectList(await _context.BookStatuses
-                //        .OrderBy(s => s.Name)
-                //        .ToListAsync(), "Id", "Name", viewModel.StatusId);
-
-                //    return View(viewModel);
-                //}
-
                 _logger.LogInformation("Processing uploaded file: {FileName}", viewModel.CoverImageFile.FileName);
-
-                // File Saving
-                //try
-                //{
-                //    // wwwroot/images/covers
-                //    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "covers");
-                //    if (!Directory.Exists(uploadsFolder))
-                //    {
-                //        Directory.CreateDirectory(uploadsFolder);
-                //    }
-
-                //    string uniqueFileName = Guid.NewGuid().ToString() + extension; // Используем проверенное расширение
-                //    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                //    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                //    {
-                //        await viewModel.CoverImageFile.CopyToAsync(fileStream);
-                //    }
-
-                //    relativeImagePath = $"/images/covers/{uniqueFileName}";
-                //}
-                //catch (Exception ex)
-                //{
-                //    // logger.LogError(ex, "Error uploading cover image for book {Title}", viewModel.Title);
-                //    ModelState.AddModelError(string.Empty, "An error occurred while uploading the cover image.");
-
-                //    // Repopulate
-                //    viewModel.Authors = new MultiSelectList(await _context.Authors
-                //        .OrderBy(a => a.FirstName)
-                //        .ToListAsync(), "Id", "FirstName", viewModel.SelectedAuthorIds);
-                //    viewModel.Conditions = new SelectList(await _context.BookConditions
-                //        .OrderBy(c => c.Name)
-                //        .ToListAsync(), "Id", "Name", viewModel.ConditionId); 
-                //    viewModel.Statuses = new SelectList(await _context.BookStatuses
-                //        .OrderBy(s => s.Name)
-                //        .ToListAsync(), "Id", "Name", viewModel.StatusId);
-
-                //    return View(viewModel);
-                //}
 
                 var fileUploadResult = await _fileStorageService.SaveFileAsync(viewModel.CoverImageFile, "images/covers");
 
@@ -310,28 +187,12 @@ namespace AntiqueBookstore.Controllers
             }
             catch (DbUpdateException ex)
             {
-                // logger.LogError(ex, "Error saving book {Title} to database", book.Title);
-                //ModelState.AddModelError(string.Empty, "An error occurred while saving the book to the database. Please try again.");
-
-                // Repopulate
-                //viewModel.Authors = new MultiSelectList(await _context.Authors
-                //    .OrderBy(a => a.FirstName)
-                //    .ToListAsync(), "Id", "FirstName", viewModel.SelectedAuthorIds); 
-                //viewModel.Conditions = new SelectList(await _context.BookConditions
-                //    .OrderBy(c => c.Name)
-                //    .ToListAsync(), "Id", "Name", viewModel.ConditionId); 
-                //viewModel.Statuses = new SelectList(await _context.BookStatuses
-                //    .OrderBy(s => s.Name)
-                //    .ToListAsync(), "Id", "Name", viewModel.StatusId);
-
                 await PopulateViewModelListsAsync(viewModel);
 
                 return View(viewModel);
             }
-
             //return (IActionResult)Task.CompletedTask;
         }
-
 
     }
 }
