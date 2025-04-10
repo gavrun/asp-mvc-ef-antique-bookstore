@@ -11,6 +11,6 @@
         //bool FileExists(string relativePath);
 
         // Deletes the file from the configured storage
-        // Task DeleteFileAsync(string relativePath);
+        Task<FileDeleteResult> DeleteFileAsync(string relativePath);
     }
 }

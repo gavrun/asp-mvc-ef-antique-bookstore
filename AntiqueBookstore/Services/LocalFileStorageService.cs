@@ -92,6 +92,50 @@
             }
         }
 
+        // delete file
+        public async Task<FileDeleteResult> DeleteFileAsync(string relativePath)
+        {
+            // validate path
+            if (string.IsNullOrWhiteSpace(relativePath))
+            {
+                _logger.LogWarning("[DeleteFileAsync] Attempted to delete with null or empty file path.");
+                return FileDeleteResult.Failed("File path cannot be null or empty.");
+            }
 
+            // delete file
+            try
+            {
+                string absolutePath = Path.Combine(_webHostEnvironment.WebRootPath, relativePath.TrimStart('/', '\\'));
+
+                if (File.Exists(absolutePath))
+                {
+                    _logger.LogInformation("[DeleteFileAsync] Deleting file: {FilePath}", absolutePath);
+                    await Task.Run(() => File.Delete(absolutePath));
+                    _logger.LogInformation("[DeleteFileAsync] Successfully deleted file: {FilePath}", absolutePath);
+                    return FileDeleteResult.Succeeded();
+                }
+                else
+                {
+                    _logger.LogWarning("[DeleteFileAsync] File not found: {FilePath}", absolutePath);
+                    return FileDeleteResult.Succeeded();
+                }
+            }
+            catch (IOException ioEx)
+            {
+                _logger.LogError(ioEx, "[DeleteFileAsync] Error deleting file {FileName}", relativePath);               
+                return FileDeleteResult.Failed($"IO error deleting file: {ioEx.Message}");
+            }
+            catch (UnauthorizedAccessException authEx)
+            {
+                _logger.LogError(authEx, "[DeleteFileAsync] Access denied deleting file: {FilePath}", relativePath);
+                return FileDeleteResult.Failed($"Access denied deleting file: {authEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "[DeleteFileAsync] Unexpected error deleting file: {FilePath}", relativePath);
+                return FileDeleteResult.Failed($"An unexpected error occurred: {ex.Message}");
+            }
+
+        }
     }
 }
