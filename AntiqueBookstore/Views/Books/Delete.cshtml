@@ -1,0 +1,107 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Book
+
+@{
+    ViewData["Title"] = "Delete Book Confirmation";
+
+    bool hasSales = Model.Sales != null && Model.Sales.Any(); // check if the Book is referenced in Sales
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Are you sure you want to delete this book?</h3>
+
+@if (hasSales)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Book cannot be deleted!</strong> This book has associated sales records and cannot be deleted until those records are removed or modified.
+    </div>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        This action cannot be undone. Deleting the book will also remove its authors data.
+    </div>
+}
+
+<div>
+    <h4>Book Details</h4>
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            Authors
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.BookAuthors != null && Model.BookAuthors.Any())
+            {
+                <ul>
+                    @foreach (var bookAuthor in Model.BookAuthors)
+                    {
+                        <li>@(bookAuthor.Author.FirstName + " " + bookAuthor.Author.LastName)</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>No authors listed.</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PublicationDate)
+        </dd>
+        <dt class="col-sm-2">
+            Condition
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Condition.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status.Name)
+        </dd>
+        <dt class="col-sm-2">
+            Cover Image
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.CoverImagePath))
+            {
+                <img src="~/@Model.CoverImagePath.TrimStart('/')" alt="Cover Image" style="max-width: 150px; max-height: 150px;" />
+            }
+            else
+            {
+                <span>No image available.</span>
+            }
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        @* Disable Delete button, if there are sales *@
+        <input type="submit" value="Delete" class="btn btn-danger" disabled="@hasSales" /> |
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+
+</div>

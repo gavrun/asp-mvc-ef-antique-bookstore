@@ -1,0 +1,111 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Models.BookEditViewModel // Укажите ваш namespace
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+
+<h1>Edit</h1>
+
+<h4>Book</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ExistingCoverImagePath" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Publisher" class="control-label"></label>
+                <textarea asp-for="Publisher" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Publisher" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PublicationDate" class="control-label"></label>
+                <input asp-for="PublicationDate" class="form-control" />
+                <span asp-validation-for="PublicationDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="PurchasePrice" class="control-label"></label>
+                <input asp-for="PurchasePrice" class="form-control" />
+                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="RecommendedPrice" class="control-label"></label>
+                <input asp-for="RecommendedPrice" class="form-control" />
+                <span asp-validation-for="RecommendedPrice" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ConditionId" class="control-label"></label>
+                <select asp-for="ConditionId" class="form-control" asp-items="Model.ConditionsList">
+                    <option value="">-- Select Condition --</option>
+                </select>
+                <span asp-validation-for="ConditionId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="StatusId" class="control-label"></label>
+                <select asp-for="StatusId" class="form-control" asp-items="Model.StatusesList">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="StatusId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SelectedAuthorIds" class="control-label"></label>
+                @* Select with multiple attribute *@
+                <select asp-for="SelectedAuthorIds" class="form-control" asp-items="Model.AuthorsList" multiple="multiple" size="6"></select>
+                <span asp-validation-for="SelectedAuthorIds" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Current Cover Image</label>
+                <div>
+                    @if (!string.IsNullOrEmpty(Model.ExistingCoverImagePath))
+                    {
+                        <img src="~/uploads/covers/@Model.ExistingCoverImagePath" alt="Current Cover" style="max-width: 150px; max-height: 150px; margin-bottom: 10px;" />
+                    }
+                    else
+                    {
+                        <p>No current image.</p>
+                    }
+                </div>
+                <label for="coverImageFile" class="control-label">Upload New Cover (Optional)</label>
+                <input type="file" name="coverImageFile" id="coverImageFile" class="form-control" />
+                @* Name 'coverImageFile' matches POST action *@
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Save Changes" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* Можно добавить скрипты для улучшения UX выбора авторов (например, Select2) *@
+}

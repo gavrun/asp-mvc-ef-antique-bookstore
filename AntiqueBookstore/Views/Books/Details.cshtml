@@ -1,0 +1,109 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Book
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+
+<h1>Details</h1>
+
+<div>
+    <h4>Book: @Html.DisplayFor(model => model.Title)</h4>
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt class="col-sm-2">
+            Authors
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.BookAuthors != null && Model.BookAuthors.Any())
+            {
+                <ul>
+                    @foreach (var bookAuthor in Model.BookAuthors)
+                    {
+                        @(bookAuthor.Author.FirstName + " " + bookAuthor.Author.LastName)
+                        @* @($"{bookAuthor.Author.FirstName} {bookAuthor.Author.LastName}") *@
+
+                        <li>@Html.DisplayFor(modelItem => bookAuthor.Author.Id)</li>
+                        // Author/Details/id
+                        <a asp-controller="Authors" asp-action="Details" asp-route-id="@bookAuthor.AuthorId">details</a>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>No authors listed.</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PublicationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PurchasePrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PurchasePrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RecommendedPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RecommendedPrice)
+        </dd>
+
+        <dt class="col-sm-2">
+            Condition
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Condition.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            Status
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status.Name)
+        </dd>
+
+        <dt class="col-sm-2">
+            Cover Image
+        </dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.CoverImagePath))
+            {
+                // path known 'uploads/covers'
+                <img src="~/uploads/covers/@Model.CoverImagePath" alt="Cover Image" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <span>No image available.</span>
+            }
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> |
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
