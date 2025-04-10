@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Employee // stub Employee (ViewModel)
+
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<h3>@ViewData["Title"]</h3>
+<h4>Employee: @Model.FirstName @Model.LastName (ID: @Model.Id)</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" /> @* hidden ID *@
+
+            <p>Employee editing form.</p>
+            
+            @* TODO: FirstName, LastName, HireDate *@
+            @* TODO: SelectList to change Position (bind PositionHistory) *@
+            @* TODO: Checkbox redirect to Deactivate button (IsActive = false) *@
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+

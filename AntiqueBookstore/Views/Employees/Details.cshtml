@@ -1,0 +1,26 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Employee // stub Employee 
+
+@{
+    ViewData["Title"] = "Employee Details";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div>
+    <h4>Employee: @Model.FirstName @Model.LastName (ID: @Model.Id)</h4> @* stub ID/FirstName/LastName *@
+    <hr />
+
+    <p>Detailed information about the employee and their position history.</p>
+
+    @* TODO: Show Employee details, current job title, job history, associated user (if any) *@
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
+    <a asp-action="Index">Back to List</a> 
+</div>
+
