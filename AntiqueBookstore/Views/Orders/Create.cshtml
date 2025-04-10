@@ -1,0 +1,50 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Order // TODO: maybe ViewModel 
+
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+@* TODO: form create order *@
+
+<h3>Create New Order</h3>
+<hr />
+
+<h3>@ViewData["Title"]</h3>
+<h4>Order</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <p>Order creation form fields.</p>
+            @* TODO: OrderDate, SelectList для CustomerId, EmployeeId, OrderStatusId *@
+            @* TODO: Link OrderItems (books, quantity) *@
+
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* TODO: dynamically add OrderItems *@
+}
+

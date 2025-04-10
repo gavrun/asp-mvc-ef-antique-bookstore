@@ -38,10 +38,10 @@
                             </ul>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" href="#">Orders</a> @* TO BE DONE LINK *@
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a> @* TBD: create manual crud *@
                         </li>
                         <li>
-                            <a class="nav-link text-dark" href="#">Customers</a> @* TO BE DONE LINK *@
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="Index">Customers</a> @* TBD: create scaffolding crud *@
                         </li>
 
                         @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Manager"))

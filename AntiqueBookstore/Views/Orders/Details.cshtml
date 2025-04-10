@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div>
+    <h4>Order ID: @Model.Id</h4> @* Отображаем ID для контекста *@
+    <hr />
+
+    <p>Detailed information about the order.</p>
+    @* TODO: Order, Customer, Employee, OrderStatus, OrderItems *@
+
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
+    <a asp-action="Index">Back to List</a> 
+</div>
+
+
+
