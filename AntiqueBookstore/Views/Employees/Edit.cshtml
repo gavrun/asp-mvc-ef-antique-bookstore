@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model AntiqueBookstore.Domain.Entities.Employee // stub Employee (ViewModel)
+@model AntiqueBookstore.Models.EmployeeEditViewModel
 
 @{
     ViewData["Title"] = "Edit Employee";
@@ -13,28 +13,67 @@
 <hr />
 
 <div class="row">
-    <div class="col-md-6">
-
+    <div class="col-md-8">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" /> @* hidden ID *@
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="IsActive" />
 
-            <p>Employee editing form.</p>
-            
-            @* TODO: FirstName, LastName, HireDate *@
-            @* TODO: SelectList to change Position (bind PositionHistory) *@
-            @* TODO: Checkbox redirect to Deactivate button (IsActive = false) *@
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="HireDate" class="form-label"></label>
+                        <input asp-for="HireDate" class="form-control" type="date" readonly />
+                        <span asp-validation-for="HireDate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="SelectedPositionId" class="form-label"></label>
+                        <select asp-for="SelectedPositionId" class="form-select" asp-items="@Model.Positions"></select>
+                        <span asp-validation-for="SelectedPositionId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="Comment" class="form-label"></label>
+                        <textarea asp-for="Comment" class="form-control" rows="4"></textarea> @* textarea *@
+                        <span asp-validation-for="Comment" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                    @* NOTE: ApplicationUserId *@
+                    @* <div class="mb-3">
+                        <label asp-for="SelectedApplicationUserId" class="form-label"></label>
+                        
+                        @if (!string.IsNullOrEmpty(Model.CurrentUserEmail))
+                        {
+                            <p class="form-control-plaintext">Currently linked to: <strong>@Model.CurrentUserEmail</strong></p>
+                        }
+
+                        <select asp-for="SelectedApplicationUserId" class="form-select" asp-items="@Model.ApplicationUsers">*@
+                            @* <option value="">-- No User Linked --</option> *@ @* BLOCKED: implemented in a separate page to avoid confusion *@
+                        @* </select>
+                        <span asp-validation-for="SelectedApplicationUserId" class="text-danger"></span>
+                    </div> *@ 
+
+                </div>
+            </div>
+
+
+            <div class="mt-4">
+                <input type="submit" value="Save Changes" class="btn btn-success" /> |
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
-
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 

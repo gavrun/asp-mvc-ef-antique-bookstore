@@ -13,9 +13,10 @@ namespace AntiqueBookstore.Controllers
         private readonly ILogger<AuthorsController> _logger; // Logger for AJAX
 
 
-        public AuthorsController(ApplicationDbContext context)
+        public AuthorsController(ApplicationDbContext context, ILogger<AuthorsController> logger)
         {
             _context = context;
+            _logger = logger; 
         }
 
         // GET: Authors

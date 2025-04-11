@@ -1,0 +1,28 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Employee
+
+@{
+    ViewData["Title"] = "Activate Employee";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<h4 class="text-success">Are you sure you want to activate this employee?</h4> @* color success *@
+<div>
+    <h4>Employee: @Model.FirstName @Model.LastName (ID: @Model.Id)</h4>
+    <hr />
+
+    <p>Confirm that you want to make this employee active again.</p>
+    @* TODO: add FirstName, LastName *@
+
+    <form asp-action="Activate">
+        @* check ActionName matches POST *@
+        <input type="hidden" asp-for="Id" /> 
+        <input type="submit" value="Activate" class="btn btn-success" /> | 
+        <a asp-action="Index">Cancel</a> 
+    </form>
+
+</div>

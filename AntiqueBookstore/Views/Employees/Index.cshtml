@@ -2,20 +2,161 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model IEnumerable<AntiqueBookstore.Domain.Entities.Employee>
+@model IEnumerable<AntiqueBookstore.Models.EmployeeIndexViewModel>
+
+@* intentionally breaking SoC pattern by ViewData *@
+@using AntiqueBookstore.Domain.Entities 
 
 @{
     ViewData["Title"] = "Employees";
 }
 
+@* TempData messages (Info, Success, Warning, Error) *@
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        @TempData["WarningMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        @TempData["InfoMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 <h3>Employees</h3>
 
-<p>
-    <a asp-action="Create">Create New Employee</a>
-</p>
+@* <p>
+    <a asp-action="Create" class="btn btn-primary">Create New Employee</a> @* Nicer UI for user management *@
+@*</p> *@
 
-<p>Employee list table.</p>
+@* Levels info table *@
 
-@* TODO: employee list table *@
+<div class="row mb-4">
+    <div class="col-md-6">
+        <p >
+            <a asp-action="Create" class="btn btn-primary mt-4">Create New Employee</a>
+        </p>
+    </div>
+    <div class="col-md-6">
 
+        <h5>Position Levels</h5>
 
+        @{
+            // Extract Levels from ViewData and cast to the required type
+            var levels = ViewData["LevelsList"] as List<Level>;
+        }
+
+        @if (levels != null && levels.Any())
+        {
+            <table class="table table-sm table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Role</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var level in levels) // by ViewData
+                    {
+                        <tr>
+                            <td>@level.Name</td>
+                            <td>@level.Description</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No Roles information available.</p>
+        }
+    </div>
+</div>
+
+@* Emploees advanced table *@
+
+<table class="table table-striped table-hover">
+
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentPositionTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentLevelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>Actions</th> @* column for actions *@
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentPositionTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentLevelName)
+                </td>
+                <td>
+                    @* "Yes" / "No" | <input> checked | true/false *@
+                    @(item.IsActive ? "Yes" : "No")
+                </td>
+                @* TODO: Actions rollout *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a> |
+
+                    @* Link to deactivation/activation depending on Status *@
+                    @if (item.IsActive)
+                    {
+                        <a asp-action="Deactivate" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Deactivate</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Activate" asp-route-id="@item.Id" class="btn btn-sm btn-outline-success">Activate</a>
+                    }
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

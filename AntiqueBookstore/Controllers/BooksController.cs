@@ -401,7 +401,7 @@ namespace AntiqueBookstore.Controllers
                         // var databaseEntity = (Book)databaseValues.ToObject();
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                            + "was modified by another user after you got the original value. "
-                           + "Your edit operation was canceled. If you still want to edit this record, "
+                           + "Edit operation was canceled. If you still want to edit this record, "
                            + "click the 'Cancel' button to reload the page.");
                     }
                 }

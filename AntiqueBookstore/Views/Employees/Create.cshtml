@@ -2,14 +2,13 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@* create ViewModel *@
-@* @model AntiqueBookstore.Models.ViewModels.EmployeeViewModel *@
+@model AntiqueBookstore.Models.EmployeeCreateViewModel
 
 @{
     ViewData["Title"] = "Create Employee";
 }
 
-<h3>Create New Employee</h3>
+<h3>@ViewData["Title"]</h3>
 <hr />
 
 <div class="row">
@@ -18,13 +17,41 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <p>Employee creation form fields will be here.</p>
-            @* TODO: FirstName, LastName, HireDate *@
-            @* TODO: SelectList to select Position *@
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="HireDate" class="form-label"></label>
+                <input asp-for="HireDate" class="form-control" type="date" /> @* TODO: type date in other places *@
+                <span asp-validation-for="HireDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SelectedPositionId" class="form-label"></label>
+                @* Drop down list *@
+                @* asp-for target (ID) asp-items collection (SelectList from ViewModel) *@
+                <select asp-for="SelectedPositionId" class="form-select" asp-items="@Model.Positions">
+                    <option value="">-- Select Position --</option> 
+                </select>
+                <span asp-validation-for="SelectedPositionId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Comment" class="form-label"></label>
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <input type="submit" value="Create" class="btn btn-success" /> |
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+
         </form>
 
     </div>

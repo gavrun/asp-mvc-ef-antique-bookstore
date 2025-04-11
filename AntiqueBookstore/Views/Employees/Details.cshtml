@@ -2,7 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model AntiqueBookstore.Domain.Entities.Employee // stub Employee 
+@model AntiqueBookstore.Models.EmployeeDetailsViewModel
 
 @{
     ViewData["Title"] = "Employee Details";
@@ -10,17 +10,91 @@
 
 <h3>@ViewData["Title"]</h3>
 
+<h4>@Model.FirstName @Model.LastName</h4>
+<hr />
+
+@* Display the employee's current position *@
 <div>
-    <h4>Employee: @Model.FirstName @Model.LastName (ID: @Model.Id)</h4> @* stub ID/FirstName/LastName *@
-    <hr />
+    <dl class="row">
+        @* Description List to display fields *@
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
 
-    <p>Detailed information about the employee and their position history.</p>
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
 
-    @* TODO: Show Employee details, current job title, job history, associated user (if any) *@
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.HireDate)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.HireDate)</dd>
 
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsActive)</dt>
+        <dd class="col-sm-9">@(Model.IsActive ? "Yes" : "No")</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CurrentPositionTitle)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CurrentPositionTitle)</dd>
+
+        <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CurrentLevelName)</dt>
+        <dd class="col-sm-9">@Html.DisplayFor(model => model.CurrentLevelName)</dd>
+
+        @* Add Id and Email for ApplicationUserId *@
+        @*
+        @if (!string.IsNullOrEmpty(Model.UserEmail))
+        {
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.UserEmail)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.UserEmail)</dd>
+        }
+        *@
+    </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
+
+@* Display the employee's position history *@
+<div class="mt-4">
+    <h5>@Html.DisplayNameFor(model => model.PositionHistory)</h5>
+
+    @if (Model.PositionHistory != null && Model.PositionHistory.Any())
+    {
+        <table class="table table-sm table-striped table-bordered">
+            <thead class="table-light">
+                <tr>
+                    @* takes from PositionHistoryViewModel *@
+                    <th>@Html.DisplayNameFor(model => model.PositionHistory.First().PositionTitle)</th>
+                    <th>@Html.DisplayNameFor(model => model.PositionHistory.First().LevelName)</th>
+                    <th>@Html.DisplayNameFor(model => model.PositionHistory.First().StartDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.PositionHistory.First().EndDate)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PositionHistory)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.PositionTitle)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LevelName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No position history found.</p>
+    }
+</div>
+
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+
+@*     @if (Model.IsActive)
+    {
+        <a asp-action="Deactivate" asp-route-id="@Model.Id" class="btn btn-warning">Deactivate</a> 
+    }
+    else
+    {
+        <a asp-action="Activate" asp-route-id="@Model.Id" class="btn btn-success">Activate</a> 
+    }
+    | *@
+
     <a asp-action="Index">Back to List</a> 
 </div>
 
