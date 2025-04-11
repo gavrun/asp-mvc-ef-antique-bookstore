@@ -6,6 +6,9 @@
 
 @{
     ViewData["Title"] = "Edit Employee";
+
+    // Initial value of ID for comparison in JS validation
+    var initialPositionId = Model.SelectedPositionId;
 }
 
 <h3>@ViewData["Title"]</h3>
@@ -14,7 +17,8 @@
 
 <div class="row">
     <div class="col-md-8">
-        <form asp-action="Edit">
+        @* with data attributes *@
+        <form asp-action="Edit" id="editEmployeeForm" data-initial-position-id="@initialPositionId">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="IsActive" />
@@ -37,8 +41,9 @@
                         <span asp-validation-for="HireDate" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
+                        @* with data attributes *@
                         <label asp-for="SelectedPositionId" class="form-label"></label>
-                        <select asp-for="SelectedPositionId" class="form-select" asp-items="@Model.Positions"></select>
+                        <select asp-for="SelectedPositionId" id="positionSelect"  class="form-select" asp-items="@Model.Positions"></select>
                         <span asp-validation-for="SelectedPositionId" class="text-danger"></span>
                     </div>
                 </div>
@@ -81,6 +86,35 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    @* JS validation for Position change by data attributes *@
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('editEmployeeForm');
+            const positionSelect = document.getElementById('positionSelect');
+
+            if (form && positionSelect) {
+                // get ID from data attribute
+                const initialPositionId = form.getAttribute('data-initial-position-id');
+
+                form.addEventListener('submit', function (event) {
+                    const currentPositionId = positionSelect.value;
+
+                    if (currentPositionId !== initialPositionId) {
+
+                        const confirmationMessage = 'Are you sure you want to change the position for the employee?';
+                        if (!confirm(confirmationMessage)) {
+                            // cancel the form submission if the user clicked "Cancel"
+                            event.preventDefault();
+                        }
+                        // send form "OK"
+                    }
+                });
+            } else {
+                console.error("Could not find form or position select element for confirmation script.");
+            }
+        });
+    </script>
 }
 
 

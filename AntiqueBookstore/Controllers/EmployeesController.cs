@@ -403,6 +403,20 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
+            // BUG: self-deactivation
+            var currentUser = await _userManager.GetUserAsync(User); // get current ApplicationUser
+            if (currentUser == null)
+            {
+                // not applicable when [Authorize] enabled
+                return Challenge(); // 401, 403
+            }
+            // match ApplicationUserId to current ID 
+            if (employee.ApplicationUserId != null && employee.ApplicationUserId == currentUser.Id)
+            {
+                TempData["ErrorMessage"] = "You cannot deactivate your own account.";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (!employee.IsActive)
             {
                 TempData["WarningMessage"] = $"Employee {employee.FirstName} {employee.LastName} is already inactive.";
@@ -425,7 +439,19 @@ namespace AntiqueBookstore.Controllers
             {
                 return NotFound();
             }
-            
+
+            // BUG: self-deactivation
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Challenge();
+            }
+            if (employee.ApplicationUserId != null && employee.ApplicationUserId == currentUser.Id)
+            {
+                TempData["ErrorMessage"] = "You cannot deactivate your own account.";
+                return RedirectToAction(nameof(Index));
+            }
+
             if (employee.IsActive)
             {
                 employee.IsActive = false;
