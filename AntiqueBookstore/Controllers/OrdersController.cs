@@ -1,10 +1,11 @@
 ﻿using AntiqueBookstore.Data;
 using AntiqueBookstore.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AntiqueBookstore.Controllers
 {
-    // [Authorize(Roles = "Sales,Manager")]
+     [Authorize(Roles = "Sales,Manager")] // work in progress
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,6 +1,7 @@
 ﻿using AntiqueBookstore.Data;
 using AntiqueBookstore.Domain.Entities;
 using AntiqueBookstore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    // [Authorize(Roles = "Manager")]
+     [Authorize(Roles = "Manager")] // work in progress
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -347,7 +348,10 @@ namespace AntiqueBookstore.Controllers
                     _context.Update(employeeToUpdate);
 
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = $"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} updated successfully.";
+                    TempData["SuccessMessage"] = $"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} updated successfully. [INFO]: "
+                                                + "Position change requires actualization [Sync Role] in User Management.";
+                                                // INFO: UserManagementController.SyncRole
+
 
                     return RedirectToAction(nameof(Index));
                 }

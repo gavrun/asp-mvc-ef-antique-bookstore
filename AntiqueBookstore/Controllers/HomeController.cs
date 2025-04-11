@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AntiqueBookstore.Controllers
 {
-    
+    //[Authorize(Roles = "Manager,Sales")] // work in progress
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

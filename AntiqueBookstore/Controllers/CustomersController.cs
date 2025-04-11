@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AntiqueBookstore.Data;
 using AntiqueBookstore.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AntiqueBookstore.Controllers
 {
+    [Authorize(Roles = "Manager,Sales")] // work in progress
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;

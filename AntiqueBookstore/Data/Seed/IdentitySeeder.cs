@@ -60,6 +60,7 @@ namespace AntiqueBookstore.Data.Seed
         {
             var adminUser = new ApplicationUser { UserName = "manager@example.com", Email = "manager@example.com", EmailConfirmed = true };
             var salesUser = new ApplicationUser { UserName = "sales@example.com", Email = "sales@example.com", EmailConfirmed = true };
+            var unlinkedUser = new ApplicationUser { UserName = "unlinked@example.com", Email = "unlinked@example.com", EmailConfirmed = true }; 
 
             // Creating users
             if (await userManager.FindByEmailAsync(adminUser.Email) == null)
@@ -78,9 +79,18 @@ namespace AntiqueBookstore.Data.Seed
                 logger.LogInformation("User created successfully");
             }
 
+            if (await userManager.FindByEmailAsync(unlinkedUser.Email) == null)
+            {
+                logger.LogInformation("Creating user...");
+                await userManager.CreateAsync(unlinkedUser, "unlinked");
+                //await userManager.AddToRoleAsync(unlinkedUser, "Sales");
+                logger.LogInformation("User created successfully");
+            }
+
             // Linking users to employees
             var manager = await userManager.FindByEmailAsync("manager@example.com");
             var sales = await userManager.FindByEmailAsync("sales@example.com");
+            //var unlinked = await userManager.FindByEmailAsync("unlinked@example.com");
 
             var employees = await context.Employees
                 .Include(e => e.PositionHistories)

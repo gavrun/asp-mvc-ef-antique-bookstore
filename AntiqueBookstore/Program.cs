@@ -41,7 +41,7 @@ namespace AntiqueBookstore
                             })
                             .AddEntityFrameworkStores<ApplicationDbContext>()
                             .AddDefaultTokenProviders()
-                            .AddDefaultUI(); // BUG: ApplicationPartManager
+                            .AddDefaultUI(); // BUG: ref. ApplicationPartManager, IdentityOptions probably overriden here
 
 
             // MVC configuration

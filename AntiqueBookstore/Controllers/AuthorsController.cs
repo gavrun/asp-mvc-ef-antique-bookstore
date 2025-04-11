@@ -1,11 +1,13 @@
 ﻿using AntiqueBookstore.Data;
 using AntiqueBookstore.Domain.Entities;
 using AntiqueBookstore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
+    [Authorize(Roles = "Manager,Sales")] // work in progress
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;
