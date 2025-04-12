@@ -15,6 +15,12 @@ namespace AntiqueBookstore
             // DI container configuration and Services
             var builder = WebApplication.CreateBuilder(args);
 
+            // Logging configuration
+            // builder.Logging.ClearProviders(); // remove default logging provider
+            // builder.Logging.AddConsole();
+            // builder.Logging.AddDebug(); // AddFile, AddSerilog
+            // builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Debug); // Information, Warning, Error, Critical
+
             // Access HttpContext outside of Controllers/Middleware
             // registered by default AddControllersWithViews() or AddRazorPages()
             // builder.Services.AddHttpContextAccessor();
@@ -34,6 +40,8 @@ namespace AntiqueBookstore
             {
                 // Configure the database provider
                 options.UseSqlServer(connectionString);
+                // options.EnableSensitiveDataLogging(); // WARNING: sensitive data in logs
+
                 // Configure the resolved interceptor instance
                 var interceptor = serviceProvider.GetRequiredService<SalesAuditInterceptor>();
                 options.AddInterceptors(interceptor);
