@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Interceptors\" />
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Domain\Exceptions\" />
     <Folder Include="TagHelpers\" />

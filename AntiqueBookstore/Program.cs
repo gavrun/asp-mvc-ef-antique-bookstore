@@ -1,4 +1,5 @@
 using AntiqueBookstore.Data;
+using AntiqueBookstore.Data.Interceptors;
 using AntiqueBookstore.Data.Seed;
 using AntiqueBookstore.Domain.Entities;
 using AntiqueBookstore.Services;
@@ -11,20 +12,38 @@ namespace AntiqueBookstore
     {
         public static async Task Main(string[] args)
         {
+            // DI container configuration and Services
             var builder = WebApplication.CreateBuilder(args);
 
-            // DI container configuration and services
+            // Access HttpContext outside of Controllers/Middleware
+            // registered by default AddControllersWithViews() or AddRazorPages()
+            // builder.Services.AddHttpContextAccessor();
 
+            // Interceptor configuration
+            builder.Services.AddScoped<SalesAuditInterceptor>();
+
+            // Connection configuration
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             // Context configuration, ApplicationDbContext, SQL Server, mode Scoped
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(connectionString));
 
+            // Context configuration, ApplicationDbContext using IServiceProvider
+            builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
+            {
+                // Configure the database provider
+                options.UseSqlServer(connectionString);
+                // Configure the resolved interceptor instance
+                var interceptor = serviceProvider.GetRequiredService<SalesAuditInterceptor>();
+                options.AddInterceptors(interceptor);
+            });
+
+            // Configure detailed error page for database-related exceptions
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-            // Identity configuration
+            // Identity configuration, custom ApplicationUser, IdentityRole
 
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -56,12 +75,11 @@ namespace AntiqueBookstore
             var app = builder.Build();
 
 
-            // BUG: Seed user to Identity 
+            // BUG: Seed user to Identity
             if (app.Environment.IsDevelopment())
             {
                 await IdentitySeeder.SeedUserAsync(app);
             }
-
 
             // Middleware conveyor pipeline
 
@@ -79,12 +97,14 @@ namespace AntiqueBookstore
                 app.UseHsts();
             }
 
+            // HTTP > HTTPS
             app.UseHttpsRedirection();
+            // Static files, CSS, JS, images
             app.UseStaticFiles();
 
             app.UseRouting();
 
-
+            // Configure checks if the user logged in and has permission to access a resource
             app.UseAuthentication();
             app.UseAuthorization();
 
