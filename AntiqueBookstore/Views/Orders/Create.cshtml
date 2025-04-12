@@ -2,49 +2,292 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model AntiqueBookstore.Domain.Entities.Order // TODO: maybe ViewModel 
+@model AntiqueBookstore.Models.OrderCreateViewModel
 
 @{
     ViewData["Title"] = "Create Order";
 }
 
-@* TODO: form create order *@
-
-<h3>Create New Order</h3>
-<hr />
 
 <h3>@ViewData["Title"]</h3>
+
 <h4>Order</h4>
 <hr />
 
-<div class="row">
-    <div class="col-md-8">
+@* TODO: Сreate Order form (HTML + Bootstrap + Razor C# ) *@
+
+<form asp-action="Create" method="post" id="createOrderForm">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
         
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @* Order Header Info (Left) *@
+        <div class="col-md-5">
+            <h4>Order Details</h4>
 
-            <p>Order creation form fields.</p>
-            @* TODO: OrderDate, SelectList для CustomerId, EmployeeId, OrderStatusId *@
-            @* TODO: Link OrderItems (books, quantity) *@
-
-
-            <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group mb-2">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-        </form>
+
+            <div class="form-group mb-2">
+                <label asp-for="SelectedCustomerId" class="control-label"></label>
+                <select asp-for="SelectedCustomerId" class="form-control" asp-items="Model.Customers">
+                    <option value="">-- Select Customer --</option>
+                </select>
+                <span asp-validation-for="SelectedCustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="SelectedEmployeeId" class="control-label"></label>
+                @* Add 'disabled' attribute if user is Sales role *@
+                <select asp-for="SelectedEmployeeId" class="form-control" asp-items="Model.Employees"
+                        disabled="@(User.IsInRole("Sales") ? "disabled" : null)">
+                    <option value="">-- Select Employee --</option>
+                </select>
+                @* If disabled, include a hidden input for the value to be posted *@
+                @if (User.IsInRole("Sales"))
+                {
+                    <input type="hidden" asp-for="SelectedEmployeeId" />
+                }
+                <span asp-validation-for="SelectedEmployeeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="SelectedOrderStatusId" class="control-label"></label>
+                <select asp-for="SelectedOrderStatusId" class="form-control" asp-items="Model.OrderStatuses">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="SelectedOrderStatusId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                <label asp-for="SelectedPaymentMethodId" class="control-label"></label>
+                <select asp-for="SelectedPaymentMethodId" class="form-control" asp-items="Model.PaymentMethods">
+                    <option value="">-- Select Payment Method --</option>
+                </select>
+                <span asp-validation-for="SelectedPaymentMethodId" class="text-danger"></span>
+            </div>
+        </div>
+
+        @* Add Sales Items (Right) *@
+        <div class="col-md-7">
+            
+            <h4>Add Books to Order</h4>
+            <span asp-validation-for="Sales" class="text-danger d-block mb-2"></span> @* Display validation for the list itself *@
+
+            <div class="input-group mb-3">
+                <select id="addBookId" class="form-control" asp-items="Model.AvailableBooks">
+                    <option value="">-- Select Book to Add --</option>
+                </select>
+                <input type="number" id="addBookPrice" class="form-control" placeholder="Sale Price" step="0.01" min="0.01">
+                <button type="button" id="addBookButton" class="btn btn-outline-success">Add Book</button>
+            </div>
+            <small id="addBookPriceError" class="text-danger d-block"></small> @* Placeholder for price error *@
+
+
+            <h5>Added Books</h5>
+
+            <table class="table table-sm table-bordered" id="salesItemsTable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Sale Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @* Rows for added books will be inserted here by JavaScript *@
+                    @* Render existing items if returning from failed POST *@
+                    @if (Model.Sales != null)
+                    {
+                        for (int i = 0; i < Model.Sales.Count; i++)
+                        {
+                            var bookTitle = Model.AvailableBooks?.FirstOrDefault(b => b.Value == Model.Sales[i].BookId.ToString())?.Text ?? $"Book ID: {Model.Sales[i].BookId}";
+                            // Note: Getting title might be tricky if book was removed from AvailableBooks list on server.
+                            // A better approach might be to pass book titles along with the Sales list in the ViewModel on POST failure.
+                            <tr>
+                                <td>@bookTitle</td>
+                                <td class="text-right">@Model.Sales[i].SalePrice.ToString("C2")</td>
+                                <td><button type="button" class="btn btn-sm btn-outline-danger remove-item-btn" data-index="@i">Remove</button></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+           
+            @* Container for hidden inputs *@
+            <div id="salesItemsContainer">
+                @* Hidden inputs will be inserted here by JavaScript *@
+                @* Render existing hidden inputs if returning from failed POST *@
+                @if (Model.Sales != null)
+                {
+                    for (int i = 0; i < Model.Sales.Count; i++)
+                    {
+                        <input type="hidden" name="Sales[@i].BookId" value="@Model.Sales[i].BookId" />
+                        <input type="hidden" name="Sales[@i].SalePrice" value="@Model.Sales[i].SalePrice" />
+                    }
+                }
+            </div>
+
+        </div>
 
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <hr />
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Create Order</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
 
+</form>
+
+@* TODO: Сreate Order form, interractivity logic and validation (JavaScript + jQuery) *@
+@* Initialization
+   Adding a New Book
+   Removing a Book
+   Re-index Hidden Inputs
+   Sort Dropdown *@
 
 @section Scripts {
+    
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    @* TODO: dynamically add OrderItems *@
-}
+    
+    @* TODO: dynamically add Order Items *@
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const addBookButton = document.getElementById('addBookButton');
+            const bookSelect = document.getElementById('addBookId');
+            const priceInput = document.getElementById('addBookPrice');
+            const priceError = document.getElementById('addBookPriceError');
+            const itemsTableBody = document.getElementById('salesItemsTable').querySelector('tbody');
+            const itemsContainer = document.getElementById('salesItemsContainer');
 
+            addBookButton.addEventListener('click', function () {
+                const selectedOption = bookSelect.options[bookSelect.selectedIndex];
+                const bookId = selectedOption.value;
+                const bookTitle = selectedOption.text;
+                const salePrice = parseFloat(priceInput.value);
+
+                // Basic validation
+                priceError.textContent = ''; // Clear previous error
+                if (!bookId) {
+                    alert('Please select a book.');
+                    return;
+                }
+                if (isNaN(salePrice) || salePrice <= 0) {
+                    priceError.textContent = 'Please enter a valid positive price.';
+                    priceInput.focus();
+                    return;
+                }
+
+                // Add item
+                addSaleItem(bookId, bookTitle, salePrice);
+
+                // Remove added Book from dropdown
+                selectedOption.remove(); 
+
+                // Clear inputs
+                bookSelect.selectedIndex = 0;
+                priceInput.value = '';
+            });
+
+            // Events delegation for remove buttons
+            itemsTableBody.addEventListener('click', function (e) {
+                if (e.target && e.target.classList.contains('remove-item-btn')) {
+                    const button = e.target;
+                    const row = button.closest('tr');
+                    const bookId = row.dataset.bookId; // Get bookId stored on row
+                    const bookTitle = row.dataset.bookTitle; // Get bookTitle stored on row
+
+                    // Remove row and hidden fields
+                    row.remove();
+                    removeHiddenFields(bookId); // Use bookId to find hidden fields
+
+                    // Re-index remaining items
+                    reindexItems();
+
+                    // Add book back to select list
+                    if (bookId && bookTitle) {
+                         const option = new Option(bookTitle, bookId);
+                         bookSelect.add(option);
+                         // Optional: sort select list alphabetically after adding back
+                         sortSelectOptions(bookSelect);
+                    }
+                }
+            });
+
+            function addSaleItem(bookId, bookTitle, salePrice) {
+                const index = itemsTableBody.rows.length; // Next index
+
+                // Add hidden inputs
+                itemsContainer.insertAdjacentHTML('beforeend', `
+                    <input type="hidden" name="Sales[${index}].BookId" value="${bookId}" data-book-id="${bookId}" />
+                    <input type="hidden" name="Sales[${index}].SalePrice" value="${salePrice}" data-book-id="${bookId}" />
+                `);
+
+                // Add row to visible table
+                const newRow = itemsTableBody.insertRow();
+                newRow.dataset.bookId = bookId; // Store bookId on the row for removal
+                newRow.dataset.bookTitle = bookTitle; // Store bookTitle for adding back to select
+                newRow.innerHTML = `
+                    <td>${bookTitle}</td>
+                    <td class="text-right">${salePrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
+                    <td><button type="button" class="btn btn-sm btn-outline-danger remove-item-btn">Remove</button></td>
+                `;
+                 // Note: Currency formatting based on Locale
+            }
+
+            function removeHiddenFields(bookId) {
+                 const hiddenInputs = itemsContainer.querySelectorAll(`input[data-book-id="${bookId}"]`);
+                 hiddenInputs.forEach(input => input.remove());
+            }
+
+            function reindexItems() {
+                const rows = itemsTableBody.querySelectorAll('tr');
+                const hiddenBookIdInputs = itemsContainer.querySelectorAll('input[name^="Sales["][name$="].BookId"]');
+                const hiddenPriceInputs = itemsContainer.querySelectorAll('input[name^="Sales["][name$="].SalePrice"]');
+
+                rows.forEach((row, i) => {
+                    // No need to reindex rows visually unless you store index
+                });
+
+                hiddenBookIdInputs.forEach((input, i) => {
+                    input.name = `Sales[${i}].BookId`;
+                });
+                hiddenPriceInputs.forEach((input, i) => {
+                    input.name = `Sales[${i}].SalePrice`;
+                });
+            }
+
+            function sortSelectOptions(selectElement) {
+                var options = Array.from(selectElement.options);
+                // Skip the first option (-- Select Book --)
+                var firstOption = options.shift();
+                options.sort(function(a, b) {
+                    if (a.text < b.text) { return -1; }
+                    if (a.text > b.text) { return 1; }
+                    return 0;
+                });
+                // Clear existing options except the first
+                while (selectElement.options.length > 1) {
+                    selectElement.remove(1);
+                }
+                // Add sorted options back
+                options.forEach(option => selectElement.add(option));
+            }
+
+            // Initial sort on page load
+            sortSelectOptions(bookSelect);
+
+            // Re-index on initial page load if returning from POST with errors
+            reindexItems();
+        });
+    </script>
+}

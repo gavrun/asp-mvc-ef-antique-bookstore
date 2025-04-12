@@ -2,43 +2,321 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model AntiqueBookstore.Domain.Entities.Order // TODO: maybe ViewModel
+@model AntiqueBookstore.Models.OrderEditViewModel
+
+@using AntiqueBookstore.Domain.Entities
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Edit Order";
+
+    var isSalesUser = User.IsInRole("Sales");
+    var employeeSelectList = Model.Employees; // Get select list to filter employees
+
+    // If the user is Sales, create a new SelectList with only the current employee and mark it as disabled in the tag helper
+    //
+    if (isSalesUser && Model.SelectedEmployeeId > 0)
+    {
+        var currentEmployeeItem = Model.Employees?
+            .FirstOrDefault(e => e.Value == Model.SelectedEmployeeId.ToString());
+
+        if (currentEmployeeItem != null)
+        {
+            employeeSelectList = new SelectList(new[] { currentEmployeeItem }, "Value", "Text", Model.SelectedEmployeeId);
+        }
+    }
 }
 
-<h3>@ViewData["Title"]</h3>
-<h4>Order ID: @Model.Id</h4>
+
+<h3>Edit Order #@Model.Id</h3>
 <hr />
 
-<div class="row">
-    <div class="col-md-8">
+@* TODO: Edit Order form (HTML + Bootstrap + Razor C# ) *@
 
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" /> @* hidden ID *@
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @* Hidden field for the Order ID being edited so that the server knows which record to update *@
+    <input type="hidden" asp-for="Id" />
 
-            <p>Order editing form fields will be here.</p>
-            @* TODO: OrderDate, SelectList для CustomerId, EmployeeId, OrderStatusId *@
-            @* TODO: add/edit/remove OrderItems *@
+    <div class="row">
+        <div class="col-md-5">
+            <h4>Order Details</h4>
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group mb-3">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
-        </form>
 
+            <div class="form-group mb-3">
+                <label asp-for="SelectedCustomerId" class="control-label"></label>
+                <select asp-for="SelectedCustomerId" class="form-select" asp-items="Model.Customers">
+                    <option value="">-- Select Customer --</option>
+                </select>
+                <span asp-validation-for="SelectedCustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SelectedEmployeeId" class="control-label"></label>
+                @* Disable dropdown if user is in Sales role *@
+                <select asp-for="SelectedEmployeeId" class="form-select" asp-items="employeeSelectList" disabled="@isSalesUser">
+                    @if (!isSalesUser)
+                    {
+                        <option value="">-- Select Employee --</option>
+                    }
+                </select>
+                @* If disabled, include a hidden input to ensure the value is posted back *@
+                @if (isSalesUser)
+                {
+                    <input type="hidden" asp-for="SelectedEmployeeId" />
+                }
+                <span asp-validation-for="SelectedEmployeeId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SelectedOrderStatusId" class="control-label"></label>
+                <select asp-for="SelectedOrderStatusId" class="form-select" asp-items="Model.OrderStatuses">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="SelectedOrderStatusId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SelectedPaymentMethodId" class="control-label"></label>
+                <select asp-for="SelectedPaymentMethodId" class="form-select" asp-items="Model.PaymentMethods">
+                    <option value="">-- Select Payment Method --</option>
+                </select>
+                <span asp-validation-for="SelectedPaymentMethodId" class="text-danger"></span>
+            </div>
+
+            @* TODO: Add DeliveryAddress  *@
+
+        </div>
+
+        <div class="col-md-7">
+            <h4>Books in Order</h4>
+
+            <div class="form-group mb-3">
+                <label asp-for="AvailableBooks" class="control-label">Add Book</label>
+                <div class="input-group">
+                    <select id="availableBooksDropdown" class="form-select" asp-items="Model.AvailableBooks">
+                        <option value="">-- Select Book to Add --</option>
+                    </select>
+                    <button type="button" id="addBookButton" class="btn btn-outline-secondary">Add</button>
+                </div>
+                <span id="addBookError" class="text-danger d-none">Please select a book.</span>
+            </div>
+
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th></th> @* Remove button *@
+                    </tr>
+                </thead>
+                <tbody id="salesItemsTableBody">
+                    @* Existing items will be rendered here by JavaScript on page load *@
+                    @* render them on server side *@
+                    @for (int i = 0; i < Model.Sales.Count; i++)
+                    {
+                        var saleItem = Model.Sales[i];
+                        var bookTitle = Model.AvailableBooks?
+                                              .FirstOrDefault(b => b.Value == saleItem.BookId
+                                              .ToString())?.Text ?? $"Book ID: {saleItem.BookId}";
+                        <tr class="sale-item-row">
+                            <td>
+                                <input type="hidden" name="Sales.Index" value="@i" />
+                                <input type="hidden" name="Sales[@i].BookId" value="@saleItem.BookId" />
+                                @bookTitle @* Display book title *@
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control form-control-sm sale-price-input" name="Sales[@i].SalePrice" value="@saleItem.SalePrice.ToString("F2")" required min="0.01" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-outline-danger btn-sm remove-book-button">Remove</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <span asp-validation-for="Sales" class="text-danger"></span>
+            <div id="noItemsMessage" class="text-muted @(Model.Sales.Any() ? "d-none" : "")">No books added to the order yet.</div>
+
+            <div>
+                <h5>Remove/Invalidate Order</h5>
+                <p>
+                    Think twice before canceling an order.
+                    Canceling an order is a logical deletion via status, not a record deletion.
+                </p>
+                <div class="form-group mt-3">
+                    @* Cancel *@
+                    @if (Model.SelectedOrderStatusId != 5)
+                    {
+                        <a asp-action="Cancel" asp-route-id="@Model.Id" class="btn btn-outline-danger">Cancel Order</a>
+                    }
+                </div>
+                
+            </div>
+
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <hr />
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
 
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+</form>
+
+
+@* TODO: Edit Order form, interractivity logic and validation (JavaScript + jQuery) *@
+@* Initialize
+   Add a new book 
+   Remove a book
+   Re-index Items
+   Toggle "No Items" message
+   Validate form *@
 
 @section Scripts {
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    @* TODO: TODO: dynamically add/edit OrderItems *@
+
+    @* TODO: dynamically add/edit OrderItems *@
+    <script>
+        $(document).ready(function () {
+
+            const salesTableBody = $('#salesItemsTableBody');
+            const availableBooksDropdown = $('#availableBooksDropdown');
+            const addBookButton = $('#addBookButton');
+            const noItemsMessage = $('#noItemsMessage');
+            const addBookError = $('#addBookError');
+            let nextIndex = @Model.Sales.Count; // Start index from existing items count
+
+            function updateIndices() {
+                salesTableBody.find('tr.sale-item-row').each(function (i, row) {
+                    $(row).find('input, select').each(function () {
+                        const name = $(this).attr('name');
+                        if (name) {
+                            const newName = name.replace(/\[\d+\]/, '[' + i + ']');
+                            $(this).attr('name', newName);
+                        }
+                    });
+                     // Update the hidden index field value as well
+                    $(row).find('input[name="Sales.Index"]').val(i);
+                });
+                nextIndex = salesTableBody.find('tr.sale-item-row').length;
+                toggleNoItemsMessage();
+            }
+
+            function toggleNoItemsMessage() {
+                if (salesTableBody.find('tr.sale-item-row').length > 0) {
+                    noItemsMessage.addClass('d-none');
+                } else {
+                    noItemsMessage.removeClass('d-none');
+                }
+            }
+
+            addBookButton.on('click', function () {
+                const selectedBookOption = availableBooksDropdown.find('option:selected');
+                const bookId = selectedBookOption.val();
+                const bookTitle = selectedBookOption.text();
+
+                addBookError.addClass('d-none'); // Hide error initially
+
+                if (!bookId) {
+                     addBookError.removeClass('d-none'); // Show error
+                    return; // Don't add if no book is selected
+                }
+
+                // Check if Book already added (on client side)
+                let alreadyAdded = false;
+                salesTableBody.find('input[name^="Sales["][name$="].BookId"]')
+                              .each(function() {
+                                  if ($(this).val() == bookId) {
+                                      alreadyAdded = true;
+                                      return false; // exit .each loop
+                                  }
+                                });
+
+                if (alreadyAdded) {
+                    alert(bookTitle + ' is already in the order.');
+                    return;
+                }
+                // End Check if Book already added
+
+                // Add new row to the table
+                // (price is added here in JS, not in a separate field, as in /Orders/Create)
+                const newRow = `
+                    <tr class="sale-item-row">
+                        <td>
+                            <input type="hidden" name="Sales.Index" value="${nextIndex}" />
+                            <input type="hidden" name="Sales[${nextIndex}].BookId" value="${bookId}" />
+                            ${bookTitle}
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" class="form-control form-control-sm sale-price-input" name="Sales[${nextIndex}].SalePrice" value="0.00" required min="0.01" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm remove-book-button">Remove</button>
+                        </td>
+                    </tr>`;
+                salesTableBody.append(newRow);
+
+                // Remove added book from dropdown and select the default option
+                selectedBookOption.remove();
+                availableBooksDropdown.val('');
+
+                updateIndices(); // Renumber indices after adding
+            });
+
+            // Use event delegation for remove buttons
+            salesTableBody.on('click', '.remove-book-button', function () {
+                const row = $(this).closest('tr');
+                const bookId = row.find('input[name$=".BookId"]').val();
+                const bookTitle = row.find('td:first').text().trim(); // Get title from first cell
+
+                // Add the book back to the dropdown
+                if (bookId && bookTitle) {
+                    availableBooksDropdown.append(new Option(bookTitle, bookId));
+                     // Optional: Sort dropdown alphabetically after adding back
+                    sortSelectOptions(availableBooksDropdown);
+                }
+
+                row.remove();
+                updateIndices(); // Renumber indices after removing
+            });
+
+             // Function to sort select options alphabetically by text
+            function sortSelectOptions(selectElement) {
+                var options = selectElement.find('option');
+                var arr = options.map(function(_, o) { return { t: $(o).text(), v: o.value, s: $(o).prop('selected') }; }).get();
+
+                // Sort, keeping the placeholder "-- Select..." at the top
+                arr.sort(function(o1, o2) {
+                    if (o1.v === "") return -1; // Keep placeholder first
+                    if (o2.v === "") return 1;
+                    return o1.t.toLowerCase().localeCompare(o2.t.toLowerCase());
+                });
+
+                options.each(function(i, o) {
+                    o.value = arr[i].v;
+                    $(o).text(arr[i].t);
+                    $(o).prop('selected', arr[i].s);
+                });
+            }
+
+            // Initial setup
+            toggleNoItemsMessage(); // Check on load
+
+            // Sort dropdown initially
+            //sortSelectOptions(availableBooksDropdown);
+        });
+    </script>
 }

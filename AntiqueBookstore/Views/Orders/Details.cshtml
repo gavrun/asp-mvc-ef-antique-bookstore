@@ -2,27 +2,142 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model AntiqueBookstore.Domain.Entities.Order
+@model AntiqueBookstore.Models.OrderDetailsViewModel
 
 @{
     ViewData["Title"] = "Order Details";
 }
 
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+
 <h3>@ViewData["Title"]</h3>
+<hr />
 
 <div>
-    <h4>Order ID: @Model.Id</h4> @* Отображаем ID для контекста *@
+
+    <div class="row">
+        @* Main Order Info (Left) *@
+        <div class="col-md-6">
+            <h4>Order Information</h4>
+            <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Id)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Id)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OrderDate)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.OrderDate)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.StatusName)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.StatusName)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.TotalAmount)</dt>
+                <dd class="col-sm-8"><strong>@Html.DisplayFor(model => model.TotalAmount)</strong></dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PaymentMethodName)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.PaymentMethodName)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PaymentDate)</dt>
+                <dd class="col-sm-8">@(Model.PaymentDate.HasValue ? Html.DisplayFor(model => model.PaymentDate) : "Not Paid Yet")</dd>
+
+            </dl>
+        </div>
+
+        @* Details: Customer, Employee, Delivery (Right) *@
+        <div class="col-md-6">
+            <h4>Customer & Delivery</h4>
+            <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CustomerName)</dt>
+                <dd class="col-sm-8">
+                    @* TODO: Link to Customer details *@
+                    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId"> 
+                        @Html.DisplayFor(model => model.CustomerName)
+                    </a> 
+                </dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.EmployeeName)</dt>
+                <dd class="col-sm-8">
+                    @* TODO: Link to Employee details *@
+                    <a asp-controller="Employees" asp-action="Details" asp-route-id="@Model.EmployeeId"> 
+                        @Html.DisplayFor(model => model.EmployeeName)
+                    </a> 
+                </dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DeliveryAddressString)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.DeliveryAddressString)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DeliveryDate)</dt>
+                <dd class="col-sm-8">@(Model.DeliveryDate.HasValue ? Html.DisplayFor(model => model.DeliveryDate) : "Not Delivered Yet")</dd>
+            </dl>
+        </div>
+    </div>
+
     <hr />
-
-    <p>Detailed information about the order.</p>
-    @* TODO: Order, Customer, Employee, OrderStatus, OrderItems *@
+    <h4>Items in this Order</h4>
+    
+    @if (Model.Sales != null && Model.Sales.Any())
+    {
+        <table class="table table-sm table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Sales.First().BookTitle)</th>
+                    <th>@Html.DisplayNameFor(model => model.Sales.First().SalePrice)</th>
+                    <th>@Html.DisplayNameFor(model => model.Sales.First().EventName)</th>
+                    <th>Actions</th> @* Book link *@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Sales)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.BookTitle)</td>
+                        <td class="text-right">@Html.DisplayFor(modelItem => item.SalePrice)</td>
+                        <td>@(item.EventName ?? "N/A")</td> @* Display N/A if no event name *@
+                        <td>
+                            @* Link to Book details *@
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId" class="btn btn-sm btn-outline-info">View Book</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="1" class="text-right"><strong>Total:</strong></td>
+                    <td class="text-right"><strong>@Html.DisplayFor(model => model.TotalAmount)</strong></td>
+                    <td colspan="2"></td> @* Empty cells for alignment *@
+                </tr>
+            </tfoot>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No items found in this order.</div>
+    }
 
 </div>
+<hr />
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
-    <a asp-action="Index">Back to List</a> 
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Order</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    
+    @* Delete not implemented *@
+    
+    @* Cancel removed usability *@
+    @* @if (Model.OrderStatusId != 5)
+    {
+        <a asp-action="Cancel" asp-route-id="@Model.Id" class="btn btn-outline-danger">Cancel Order</a>
+    } *@
 </div>
-
-
 

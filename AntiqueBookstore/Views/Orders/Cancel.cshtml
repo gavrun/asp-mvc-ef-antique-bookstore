@@ -1,0 +1,55 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model AntiqueBookstore.Domain.Entities.Order
+
+@{
+    ViewData["Title"] = "Cancel Order";
+
+    var customerName = Model.Customer != null ? $"{Model.Customer.FirstName} {Model.Customer.LastName}" : "N/A";
+    var employeeName = Model.Employee != null ? $"{Model.Employee.FirstName} {Model.Employee.LastName}" : "N/A";
+}
+
+<h3>Cancel Order #@Model.Id</h3>
+<hr />
+
+<div class="alert alert-danger" role="alert">
+    <strong>Warning:</strong> 
+    Are you sure you want to cancel this order? Think twice before canceling an order.
+    The status of the books included in this order will be set back to 'Available' to orders and become unavailable for current customer.
+</div>
+
+<div>
+    <h4>Order Details</h4>
+    <dl class="row">
+        <dt class="col-sm-3">Order ID</dt>
+        <dd class="col-sm-9">@Model.Id</dd>
+
+        <dt class="col-sm-3">Order Date</dt>
+        <dd class="col-sm-9">@Model.OrderDate.ToString("yyyy-MM-dd")</dd>
+
+        <dt class="col-sm-3">Customer</dt>
+        <dd class="col-sm-9">@customerName</dd>
+
+        <dt class="col-sm-3">Sales Rep</dt>
+        <dd class="col-sm-9">@employeeName</dd>
+
+        <dt class="col-sm-3">Current Status</dt>
+        <dd class="col-sm-9">@Model.OrderStatus?.Name</dd>
+
+        <dt class="col-sm-3">Total Amount</dt>
+        <dd class="col-sm-9">@Model.TotalAmount.ToString("C2")</dd>
+    </dl>
+
+    <form asp-action="Cancel" method="post">
+        @* POST to CancelConfirmed [HttpPost, ActionName("Cancel")] *@
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Confirm Cancellation</button> 
+        
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Order Details</a> 
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+    </form>
+
+</div>
+
