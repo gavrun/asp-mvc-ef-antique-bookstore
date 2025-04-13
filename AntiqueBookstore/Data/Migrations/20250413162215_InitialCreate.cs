@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace AntiqueBookstore.Migrations
+namespace AntiqueBookstore.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialSchemaCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -602,7 +602,7 @@ namespace AntiqueBookstore.Migrations
                 {
                     { 1, null, null, "Jane", new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Smith" },
                     { 2, null, null, "Bob", new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Williams" },
-                    { 3, null, null, "New", new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Billy" }
+                    { 3, null, null, "New", new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, "Unlinked" }
                 });
 
             migrationBuilder.InsertData(
@@ -677,7 +677,7 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 6, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2786), 1, null, 2 });
+                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 12, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1597), 1, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "Positions",
@@ -709,7 +709,7 @@ namespace AntiqueBookstore.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 4, 4, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2794), 6, null, 1 });
+                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 4, 10, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1603), 6, null, 1 });
 
             migrationBuilder.InsertData(
                 table: "PositionHistories",
@@ -717,7 +717,8 @@ namespace AntiqueBookstore.Migrations
                 values: new object[,]
                 {
                     { 1, 1, null, true, 1, new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 2, null, true, 2, new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 2, 2, null, true, 2, new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 3, null, true, 2, new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(

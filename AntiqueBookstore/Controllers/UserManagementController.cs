@@ -61,6 +61,13 @@ namespace AntiqueBookstore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // Check if Employee is active
+            if (!selectedEmployee.IsActive)
+            {
+                TempData["ErrorMessage"] = $"Cannot link user to inactive employee '{selectedEmployee.FirstName} {selectedEmployee.LastName}'.";
+                return RedirectToAction(nameof(Index)); // Прерываем операцию
+            }
+
             // Check if Employee is already linked to another user
             if (!string.IsNullOrEmpty(selectedEmployee.ApplicationUserId) && selectedEmployee.ApplicationUserId != userId)
             {

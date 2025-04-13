@@ -49,6 +49,15 @@ namespace AntiqueBookstore.Data.Configurations
                     IsActive = true,
                     EmployeeId = 2,
                     PositionId = 2
+                },
+                new PositionHistory
+                {
+                    PromotionId = 3,
+                    StartDate = new DateTime(2023, 3, 10),
+                    EndDate = null,
+                    IsActive = true,
+                    EmployeeId = 3,
+                    PositionId = 2
                 }
                 );
         }

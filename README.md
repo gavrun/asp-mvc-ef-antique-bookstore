@@ -19,6 +19,8 @@ The goal here is to learn how software industry works.
 
 ### Roadmap of the project (product documentation)
 
+It is a mockup of documents that should be created for a real project.
+
 ```
 ├── AntiqueBookstore
 └── docs
@@ -125,4 +127,65 @@ AntiqueBookstore
 
 ### Requirements and steps to deploy
 
-*work in progress*
+1. Clone the repository.
+
+```
+git clone <URL>
+```
+
+2. Launch Visual Studio.
+
+3. Configure the database connection string (appsettings.json), section "ConnectionStrings".
+
+```
+/AntiqueBookstore/appsettings.json
+"ConnectionStrings":
+```
+
+4. Restore dependencies and rebuild the solution.
+
+```
+dotnet restore
+```
+
+5. Run the application so it runs migration an creates a db.
+
+```
+https://localhost:<port>
+```
+
+6. Apply database migrations (press 'Apply Migrations' button, if MigrateAsync deesn't do it). Optionally, run migration manually.
+
+``` 
+dotnet tool install --global dotnet-ef
+dotnet ef database update
+```
+
+7. The application will populate the database with initial data and user accounts:
+
+```
+bookstore manager
+UserName "manager@example.com", Password "manager"
+
+sales rep
+UserName "sales@example.com", Password "sales"
+
+a new user
+UserName "unlinked@example.com", Password "unlinked"
+```
+
+8. Optionally, go to the registration page and create a new user.
+
+```
+https://localhost:<port>/Identity/Account/Register
+```
+
+9. Login.
+
+```
+https://localhost:<port>/Identity/Account/Login
+```
+
+10. Logging as a manager, you can assign a new user to a role accodring to `/docs/analysis/business_scenario.md`
+
+ The `bookstore manager` and the `sales rep` already assigned roles by data seeding, but in UI in [User Management] you may still see them as unassigned, just click it through. 

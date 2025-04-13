@@ -77,9 +77,9 @@ namespace AntiqueBookstore.Data.Configurations
                 {
                     Id = 3,
                     FirstName = "New",
-                    LastName = "Billy",
+                    LastName = "Unlinked",
                     HireDate = new DateTime(2023, 5, 1),
-                    IsActive = true,
+                    IsActive = false,
                     ApplicationUserId = null // will stay null after seeding 
                 }
             );

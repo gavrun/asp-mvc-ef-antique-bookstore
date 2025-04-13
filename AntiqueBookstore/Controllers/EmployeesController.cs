@@ -458,6 +458,17 @@ namespace AntiqueBookstore.Controllers
 
             if (employee.IsActive)
             {
+                // Unlink ApplicationUserId
+                string unlinkedUserName = null; // for message
+                if (!string.IsNullOrEmpty(employee.ApplicationUserId))
+                {
+                    var linkedUser = await _userManager.FindByIdAsync(employee.ApplicationUserId);
+                    unlinkedUserName = linkedUser?.UserName; // keep for message
+                    
+                    employee.ApplicationUserId = null; // nlink Role
+                    _logger.LogInformation("User {UserId} unlinked from Employee {EmployeeId} due to deactivation.", employee.ApplicationUserId, employee.Id);
+                }
+
                 employee.IsActive = false;
                 _context.Update(employee); // update IsActive
 

@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AntiqueBookstore.Migrations
+namespace AntiqueBookstore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250407230630_InitialSchemaCreate")]
-    partial class InitialSchemaCreate
+    [Migration("20250413162215_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -837,8 +837,8 @@ namespace AntiqueBookstore.Migrations
                             Id = 3,
                             FirstName = "New",
                             HireDate = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
-                            LastName = "Billy"
+                            IsActive = false,
+                            LastName = "Unlinked"
                         });
                 });
 
@@ -938,7 +938,7 @@ namespace AntiqueBookstore.Migrations
                             Id = 1,
                             CustomerId = 1,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 6, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2786),
+                            OrderDate = new DateTime(2025, 4, 12, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1597),
                             OrderStatusId = 1,
                             PaymentMethodId = 2
                         },
@@ -948,7 +948,7 @@ namespace AntiqueBookstore.Migrations
                             CustomerId = 3,
                             DeliveryAddressId = 3,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 4, 23, 6, 30, 569, DateTimeKind.Utc).AddTicks(2794),
+                            OrderDate = new DateTime(2025, 4, 10, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1603),
                             OrderStatusId = 6,
                             PaymentMethodId = 1
                         });
@@ -1161,6 +1161,14 @@ namespace AntiqueBookstore.Migrations
                         {
                             PromotionId = 2,
                             EmployeeId = 2,
+                            IsActive = true,
+                            PositionId = 2,
+                            StartDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            PromotionId = 3,
+                            EmployeeId = 3,
                             IsActive = true,
                             PositionId = 2,
                             StartDate = new DateTime(2023, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
