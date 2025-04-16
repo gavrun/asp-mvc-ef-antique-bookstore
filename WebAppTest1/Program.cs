@@ -24,7 +24,7 @@ namespace WebAppTest1
             //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>  
                             {
                                 options.SignIn.RequireConfirmedAccount = false;
                                 options.Password.RequireDigit = false;

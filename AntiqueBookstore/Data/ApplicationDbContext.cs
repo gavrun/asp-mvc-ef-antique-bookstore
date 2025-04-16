@@ -19,7 +19,7 @@ namespace AntiqueBookstore.Data
         // DbSet for main model entities
         public DbSet<Book> Books { get; set; } 
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; } // Moq lib needs virtual
         public DbSet<Position> Positions { get; set; }
         public DbSet<Level> Levels { get; set; } // User entity Level
         public DbSet<Customer> Customers { get; set; }
